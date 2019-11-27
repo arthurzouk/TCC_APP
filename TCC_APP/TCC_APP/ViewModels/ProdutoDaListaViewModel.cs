@@ -12,23 +12,16 @@ namespace TCC_APP.ViewModels
 {
     class ProdutoDaListaViewModel : BaseViewModel
     {
-        public ObservableCollection<ProdutosDaLista_Result> ProdutoDaLista { get; set; }
+        public ObservableCollection<Produto> ProdutoDaLista { get; set; }
         public Command LoadItemsCommand { get; set; }
-        public string id;
+        public string idDeBusca;
 
         public ProdutoDaListaViewModel(string idDeBusca)
         {
             Title = "Produtos da Lista";
-            this.id = idDeBusca;
-            ProdutoDaLista = new ObservableCollection<ProdutosDaLista_Result>();
+            this.idDeBusca = idDeBusca;
+            ProdutoDaLista = new ObservableCollection<Produto>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
-
-            MessagingCenter.Subscribe<DetalhesDaListaDeCompraPage, ProdutosDaLista_Result>(this, "AddItem", async (obj, item) =>
-            {
-                var newItem = item as ProdutosDaLista_Result;
-                ProdutoDaLista.Add(newItem);
-                await ProdutoDaListaDataStore.AddItemAsync(newItem);
-            });
         }
 
         async Task ExecuteLoadItemsCommand()
@@ -42,11 +35,28 @@ namespace TCC_APP.ViewModels
             {
                 ProdutoDaLista.Clear();
 
-                _stringDeBusca = id;
-                var items = await ProdutoDaListaDataStore.GetItemsAsync(_stringDeBusca);
-                foreach (var item in items)
+                List<ProdutoDaLista> tabelaRelacional = null;
+                Produto produto = null;
+
+
+                using (var dados = new AcessoDB())
                 {
-                    ProdutoDaLista.Add(item);
+                    tabelaRelacional = dados.GetAllProdutoDaLista(idDeBusca);
+                }
+
+                foreach (var item in tabelaRelacional)
+                {
+                    using (var dados = new AcessoDB())
+                    {
+                        produto = dados.GetProduto(item.IdProduto);
+                    }
+
+                    if (produto != null)
+                    {
+                        ProdutoDaLista.Add(produto);
+                    }                    
+
+                    produto = null;
                 }
             }
             catch (Exception ex)

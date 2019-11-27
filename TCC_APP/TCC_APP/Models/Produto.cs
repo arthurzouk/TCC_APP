@@ -14,9 +14,9 @@ namespace TCC_APP.Models
         [MaxLength(100)]
         public string Nome { get; set; }
         [MaxLength(100)]
+        public string Marca { get; set; }
+        [MaxLength(100)]
         public string _img { get; set; }
-
-        public string _quantidade { get; set; }
 
         public override string ToString()
         {

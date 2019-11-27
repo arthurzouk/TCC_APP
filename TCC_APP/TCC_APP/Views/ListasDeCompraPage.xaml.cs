@@ -46,8 +46,7 @@ namespace TCC_APP.Views
         {
             base.OnAppearing();
 
-            if (viewModel.Listas.Count == 0)
-                viewModel.LoadItemsCommand.Execute(null);
+            viewModel.LoadItemsCommand.Execute(null);
         }
     }
 }

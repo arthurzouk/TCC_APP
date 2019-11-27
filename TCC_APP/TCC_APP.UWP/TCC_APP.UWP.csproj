@@ -159,7 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TCC_APP\TCC_APP.csproj">
-      <Project>{770204AE-3D2A-44A6-A55E-5F53FD11944D}</Project>
+      <Project>{05fff271-88af-4d8b-b719-dd2b8be8d11a}</Project>
       <Name>TCC_APP</Name>
     </ProjectReference>
   </ItemGroup>

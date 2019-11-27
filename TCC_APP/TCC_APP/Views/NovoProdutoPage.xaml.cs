@@ -19,7 +19,8 @@ namespace TCC_APP.Views
             InitializeComponent();
             Item = new Produto
             {
-                Nome = "Nova Produto"
+                Nome = "Novo Produto",
+                Marca = "qualquer um"
                 //Preco = "R$ 00,00"
                 //Quantidade = "2"
             };
@@ -27,10 +28,24 @@ namespace TCC_APP.Views
             BindingContext = this;
         }
 
-        async void Save_Clicked(object sender, EventArgs e)
+        void Save_Clicked(object sender, EventArgs e)
         {
-            MessagingCenter.Send(this, "AddItem", Item);
-            await Navigation.PopModalAsync();
+            Produto novoProduto = new Produto
+            {
+                Id = Guid.NewGuid().ToString(),
+                Marca = string.Empty,
+                Nome = Item.Nome,
+                _img = string.Empty
+            };
+
+            using (var dados = new AcessoDB())
+            {
+                dados.InserirProduto(novoProduto);
+            }
+
+            //MessagingCenter.Send(this, "AddItem", Item);
+            //await Navigation.PopModalAsync();
+            Navigation.PopModalAsync();
         }
 
         async void Cancel_Clicked(object sender, EventArgs e)

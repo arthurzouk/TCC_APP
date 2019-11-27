@@ -20,13 +20,6 @@ namespace TCC_APP.ViewModels
             Title = "Produtos";
             Produtos = new ObservableCollection<Produto>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
-
-            MessagingCenter.Subscribe<NovoProdutoPage, Produto>(this, "AddItem", async (obj, item) =>
-            {
-                var newItem = item as Produto;
-                Produtos.Add(newItem);
-                await ProdutoDataStore.AddItemAsync(newItem);
-            });
         }
 
         async Task ExecuteLoadItemsCommand()
@@ -39,7 +32,15 @@ namespace TCC_APP.ViewModels
             try
             {
                 Produtos.Clear();
-                var items = await ProdutoDataStore.GetItemsAsync("teste");
+                //var items = await ProdutoDataStore.GetItemsAsync("teste");
+
+                List<Produto> items = null;
+
+                using (var dados = new AcessoDB())
+                {
+                     items = dados.GetAllProduto();
+                }
+
                 foreach (var item in items)
                 {
                     Produtos.Add(item);

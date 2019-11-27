@@ -16,13 +16,14 @@ namespace TCC_APP.Views
     {
         //ItemDetailViewModel viewModel;
         ProdutoDaListaViewModel viewModel;
+        string idLista = string.Empty;
 
         public DetalhesDaListaDeCompraPage(ItemDetailViewModel viewModel, string id)
         {
             InitializeComponent();
 
-
-            BindingContext = this.viewModel = new ProdutoDaListaViewModel(id);
+            idLista = id;
+            BindingContext = this.viewModel = new ProdutoDaListaViewModel(idLista);
         }
 
         public DetalhesDaListaDeCompraPage()
@@ -53,15 +54,14 @@ namespace TCC_APP.Views
 
         async void AddItem_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new NavigationPage(new NovoProdutoPage()));
+            await Navigation.PushModalAsync(new NavigationPage(new NovoProdutoDaListaPage(idLista)));
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
-            if (viewModel.ProdutoDaLista.Count == 0)
-                viewModel.LoadItemsCommand.Execute(null);
+            viewModel.LoadItemsCommand.Execute(null);
         }
     }
 }

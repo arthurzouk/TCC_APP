@@ -7,6 +7,7 @@ using Xamarin.Forms;
 
 using TCC_APP.Models;
 using TCC_APP.Views;
+using System.Collections.Generic;
 
 namespace TCC_APP.ViewModels
 {
@@ -20,13 +21,6 @@ namespace TCC_APP.ViewModels
             Title = "Listas de compra";
             Listas = new ObservableCollection<ListaDeCompra>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
-
-            MessagingCenter.Subscribe<NovaListaDeCompraPage, ListaDeCompra>(this, "AddItem", async (obj, item) =>
-            {
-                var newItem = item as ListaDeCompra;
-                Listas.Add(newItem);
-                await ListaDataStore.AddItemAsync(newItem);
-            });
         }
 
         async Task ExecuteLoadItemsCommand()
@@ -39,7 +33,15 @@ namespace TCC_APP.ViewModels
             try
             {
                 Listas.Clear();
-                var items = await ListaDataStore.GetItemsAsync("teste");
+                //var items = await ListaDataStore.GetItemsAsync("teste");
+
+                List<ListaDeCompra> items = null;
+
+                using (var dados = new AcessoDB())
+                {
+                    items = dados.GetAllListaDeCompra();
+                }
+
                 foreach (var item in items)
                 {
                     Listas.Add(item);

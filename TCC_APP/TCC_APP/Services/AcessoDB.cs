@@ -24,10 +24,10 @@ namespace TCC_APP
 
         }
         #region CRUD padrão usuário
-        //public void InserirUsuario(Usuario usuario)
-        //{
-        //    conexaoSQLite.Insert(usuario);
-        //}
+        public void InserirUsuario(Usuario usuario)
+        {
+            conexaoSQLite.Insert(usuario);
+        }
         //public void AtualizarUsuario(Usuario usuario)
         //{
         //    conexaoSQLite.Update(usuario);
@@ -46,11 +46,41 @@ namespace TCC_APP
         }
         #endregion
 
-        #region CRUD genérico
-        public void Inserir(object objeto)
+        #region CRUD produto
+
+        public void InserirProduto(Produto produto)
         {
-            conexaoSQLite.Insert(objeto);
+            conexaoSQLite.Insert(produto);
         }
+        //public void AtualizarUsuario(Usuario usuario)
+        //{
+        //    conexaoSQLite.Update(usuario);
+        //}
+        //public void DeletarUsuario(Usuario usuario)
+        //{
+        //    conexaoSQLite.Delete(usuario);
+        //}
+        #endregion
+
+        #region CRUD ProdutoDaLista
+
+        internal void inserirProdutoDaLista(ProdutoDaLista novoProdutoDaLista)
+        {
+            conexaoSQLite.Insert(novoProdutoDaLista);
+        }
+
+        #endregion
+
+        #region CRUD ListaDeCompra
+
+        public void InserirListaDeCompra(ListaDeCompra lista)
+        {
+            conexaoSQLite.Insert(lista);
+        }
+
+        #endregion
+
+        #region CRUD genérico
         public void Atualizar(object objeto)
         {
             conexaoSQLite.Update(objeto);
@@ -84,19 +114,22 @@ namespace TCC_APP
         #endregion
 
         #region Gets ProdutoDaLista
-        public ProdutosDaLista_Result GetProdutoDaLista(string id)
+        public ProdutoDaLista GetProdutoDaLista(string id)
         {
             //modificar criterio de busca
-            return conexaoSQLite.Table<ProdutosDaLista_Result>().FirstOrDefault(c => c._quantidade == id);
+            return conexaoSQLite.Table<ProdutoDaLista>().FirstOrDefault(c => c.Id == id);
         }
-        public List<ProdutosDaLista_Result> GetAllProdutoDaLista(string idLista)
+        public List<ProdutoDaLista> GetAllProdutoDaLista(string idLista)
         {
-            var q = conexaoSQLite.Query<ProdutosDaLista_Result>(
-                "select p.Nome, p._img, pdl.Quantidade from ProdutoDaLista pdl"
-                + " inner join Produto p"
-                + " on pdl.IdProduto = p.Id where pdl.IdListaDeCompra = ?",
-                idLista).ToList();
-            return q; //.Select(x => new ProdutosDaLista_Result { _nomeProduto = x.Nome, _img = x._img, _quantidade = x._quantidade });
+            return conexaoSQLite.Table<ProdutoDaLista>().Where(c => c.IdListaDeCompra == idLista).ToList();
+
+            //var q = conexaoSQLite.Query<ProdutoDaLista>(
+            //    "select p.Nome, p._img, pdl.Quantidade from ProdutoDaLista pdl"
+            //    + " inner join Produto p"
+            //    + " on pdl.IdProduto = p.Id where pdl.IdListaDeCompra = ?",
+            //    idLista).ToList();
+            //return q; 
+            //.Select(x => new ProdutosDaLista_Result { _nomeProduto = x.Nome, _img = x._img, _quantidade = x._quantidade });
             //return conexaoSQLite.Table<ProdutoDaLista>().OrderBy(c => c.Id).ToList();
         }
         #endregion

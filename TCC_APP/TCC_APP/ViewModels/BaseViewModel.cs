@@ -6,18 +6,11 @@ using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 
 using TCC_APP.Models;
-using TCC_APP.Services;
 
 namespace TCC_APP.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public string _stringDeBusca;
-
-        public IDataStore<ListaDeCompra> ListaDataStore => DependencyService.Get<IDataStore<ListaDeCompra>>() ?? new ListaMockDataStore();
-        public IDataStore<Produto> ProdutoDataStore => DependencyService.Get<IDataStore<Produto>>() ?? new ProdutoMockDataStore();
-        public IDataStore<ProdutosDaLista_Result> ProdutoDaListaDataStore => DependencyService.Get<IDataStore<ProdutosDaLista_Result>>() ?? new ProdutoDaListaMockDataStore(_stringDeBusca);
-
         bool isBusy = false;
         public bool IsBusy
         {

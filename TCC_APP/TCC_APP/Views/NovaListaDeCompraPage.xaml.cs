@@ -35,7 +35,12 @@ namespace TCC_APP.Views
                 Descricao = Item.Descricao
             };
 
-            MessagingCenter.Send(this, "AddItem", novaLista);
+            using (var dados = new AcessoDB())
+            {
+                dados.InserirListaDeCompra(novaLista);
+            }
+
+            //MessagingCenter.Send(this, "AddItem", novaLista);
             await Navigation.PopModalAsync();
         }
 

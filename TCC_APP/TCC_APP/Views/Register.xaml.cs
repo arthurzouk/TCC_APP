@@ -33,7 +33,7 @@ namespace TCC_APP.Views
             {
                 using (var dados = new AcessoDB())
                 {
-                    dados.Inserir(usuario);
+                    dados.InserirUsuario(usuario);
                 }
 
                 var rootPage = Navigation.NavigationStack.FirstOrDefault();
