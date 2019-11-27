@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TCC_APP.Views.Register"
+             Title="Cadastro Usuario">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="StartAndExpand">
+            <Label Text="Usuário" />
+            <Entry x:Name="LoginUsuario" Placeholder="Usuário" />
+            <Label Text="Senha" />
+            <Entry x:Name="Senha" IsPassword="true" />
+            <Label Text="E-mail" />
+            <Entry x:Name="email" />
+            <Button x:Name="btnCadastrar" Text="Cadastrar" />
+            <Label x:Name="messageLabel" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
