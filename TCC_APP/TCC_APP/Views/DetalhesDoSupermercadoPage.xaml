@@ -8,5 +8,42 @@
         <Label Text="{Binding ItemSupermercado.Nome}" FontSize="Small"/>
         <Label Text="Distância:" FontSize="Medium" />
         <Label Text="{Binding ItemSupermercado.Distancia}" FontSize="Small"/>
+
+        <SearchBar Placeholder="Procurar..."
+           CancelButtonColor="Orange"
+           PlaceholderColor="LightBlue"
+           TextColor="Orange"
+           HorizontalTextAlignment="Center"
+           FontSize="Medium"
+           FontAttributes="Italic" 
+           TextChanged="OnTextChanged"/>
+        <!--Lista de produtos da Lista de compras-->
+        <ListView x:Name="ItemsListView"
+                ItemsSource="{Binding ProdutoDoSupermercado}"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                RefreshCommand="{Binding LoadItemsCommand}"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                CachingStrategy="RecycleElement"
+                ItemSelected="OnItemSelected">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Padding="10">
+                            <Label Text="{Binding Nome}" 
+                                LineBreakMode="NoWrap" 
+                                Style="{DynamicResource ListItemTextStyle}" 
+                                FontSize="16" />
+                            <Entry Text="{Binding Marca}" 
+                                Style="{DynamicResource ListItemDetailTextStyle}"
+                                FontSize="13" />
+                            <Button Text="Remover" Clicked="Remove_Clicked" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </StackLayout>
 </ContentPage>

@@ -23,6 +23,7 @@ namespace TCC_APP
             conexaoSQLite.CreateTable<HistoricoDeCompra>();
             conexaoSQLite.CreateTable<Supermercado>();
         }
+
         #region CRUD padrão usuário
         public void InserirUsuario(Usuario usuario)
         {
@@ -107,30 +108,6 @@ namespace TCC_APP
         }
         #endregion
 
-        #region CRUD ProdutoDaLista
-
-        internal void inserirProdutoDaLista(ProdutoDaLista novoProdutoDaLista)
-        {
-            conexaoSQLite.Insert(novoProdutoDaLista);
-        }
-        public void DeletarProdutoDaLista(string idLista, string idProduto)
-        {
-            conexaoSQLite.Table<ProdutoDaLista>().Delete(x => x.IdListaDeCompra == idLista && x.IdProduto == idProduto);
-        }
-
-        #endregion
-        #region Gets ProdutoDaLista
-        public ProdutoDaLista GetProdutoDaLista(string id)
-        {
-            //modificar criterio de busca
-            return conexaoSQLite.Table<ProdutoDaLista>().FirstOrDefault(c => c.Id == id);
-        }
-        public List<ProdutoDaLista> GetAllProdutoDaLista(string idLista)
-        {
-            return conexaoSQLite.Table<ProdutoDaLista>().Where(c => c.IdListaDeCompra == idLista).ToList();
-        }
-        #endregion
-
         #region CRUD ListaDeCompra
 
         public void InserirListaDeCompra(ListaDeCompra lista)
@@ -157,6 +134,38 @@ namespace TCC_APP
             return conexaoSQLite.Table<ListaDeCompra>().OrderBy(c => c.Id).ToList();
         }
         #endregion
+
+
+        #region CRUD ProdutoDaLista
+
+        internal void inserirProdutoDaLista(ProdutoDaLista novoProdutoDaLista)
+        {
+            conexaoSQLite.Insert(novoProdutoDaLista);
+        }
+        public void DeletarProdutoDaLista(string idLista, string idProduto)
+        {
+            conexaoSQLite.Table<ProdutoDaLista>().Delete(x => x.IdListaDeCompra == idLista && x.IdProduto == idProduto);
+        }
+
+        #endregion
+        #region Gets ProdutoDaLista
+        public ProdutoDaLista GetProdutoDaLista(string id)
+        {
+            //modificar criterio de busca
+            return conexaoSQLite.Table<ProdutoDaLista>().FirstOrDefault(c => c.Id == id);
+        }
+        public List<ProdutoDaLista> GetAllProdutoDaLista(string idLista)
+        {
+            return conexaoSQLite.Table<ProdutoDaLista>().Where(c => c.IdListaDeCompra == idLista).ToList();
+        }
+        #endregion
+
+
+
+        internal List<ProdutoDoSupermercado> GetAllProdutoSupermercado(string idSupermercado)
+        {
+            return conexaoSQLite.Table<ProdutoDoSupermercado>().Where(c => c.IdSupermercado == idSupermercado).ToList();
+        }
 
         public void Dispose()
         {
