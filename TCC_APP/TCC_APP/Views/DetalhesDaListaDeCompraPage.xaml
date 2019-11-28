@@ -37,7 +37,7 @@
                             <Entry Text="{Binding Quantidade}" 
                                 Style="{DynamicResource ListItemDetailTextStyle}"
                                 FontSize="13" />
-
+                          <Button Text="Remover" Clicked="Remove_Clicked" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

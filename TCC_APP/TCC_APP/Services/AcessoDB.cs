@@ -68,6 +68,10 @@ namespace TCC_APP
         {
             conexaoSQLite.Insert(novoProdutoDaLista);
         }
+        public void DeletarProdutoDaLista(string idLista, string idProduto)
+        {
+            conexaoSQLite.Table<ProdutoDaLista>().Delete(x => x.IdListaDeCompra == idLista && x.IdProduto == idProduto);
+        }
 
         #endregion
 
@@ -76,6 +80,11 @@ namespace TCC_APP
         public void InserirListaDeCompra(ListaDeCompra lista)
         {
             conexaoSQLite.Insert(lista);
+        }
+        public void DeletarListaDeCompra(string idLista)
+        {
+            conexaoSQLite.Table<ListaDeCompra>().Delete(x => x.Id == idLista);
+            //conexaoSQLite.Delete(lista);
         }
 
         #endregion
@@ -112,7 +121,6 @@ namespace TCC_APP
             return conexaoSQLite.Table<Produto>().OrderBy(c => c.Id).ToList();
         }
         #endregion
-
         #region Gets ProdutoDaLista
         public ProdutoDaLista GetProdutoDaLista(string id)
         {

@@ -68,5 +68,15 @@ namespace TCC_APP.ViewModels
                 IsBusy = false;
             }
         }
+
+        public Command<Produto> RemoveCommand
+        {
+            get
+            {
+                return new Command<Produto>((Product) => {
+                    ProdutoDaLista.Remove(Product);
+                });
+            }
+        }
     }
 }

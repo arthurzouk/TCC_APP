@@ -10,6 +10,7 @@ using Xamarin.Forms.Xaml;
 using TCC_APP.Models;
 using TCC_APP.Views;
 using TCC_APP.ViewModels;
+using System.Diagnostics;
 
 namespace TCC_APP.Views
 {
@@ -37,9 +38,32 @@ namespace TCC_APP.Views
             ItemsListView.SelectedItem = null;
         }
 
-        async void AddItem_Clicked(object sender, EventArgs e)
+        async void AddItem_Clicked(object sender, EventArgs args)
         {
             await Navigation.PushModalAsync(new NavigationPage(new NovaListaDeCompraPage()));
+        }
+
+        async void Remove_Clicked(object sender, EventArgs args)
+        {
+            try
+            {
+                var button = sender as Button;
+                var listaDeCompra = button.BindingContext as ListaDeCompra;
+                var vm = BindingContext as ListasViewModel;
+                vm.RemoveCommand.Execute(listaDeCompra);
+
+                using (var dados = new AcessoDB())
+                {
+                    dados.DeletarListaDeCompra(listaDeCompra.Id);
+                }
+
+                await DisplayAlert("Lista de compras deletada", "A lista " + listaDeCompra.Nome + " foi deletada.", "OK");
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
 
         protected override void OnAppearing()

@@ -56,5 +56,15 @@ namespace TCC_APP.ViewModels
                 IsBusy = false;
             }
         }
+
+        public Command<ListaDeCompra> RemoveCommand
+        {
+            get
+            {
+                return new Command<ListaDeCompra>((Product) => {
+                    Listas.Remove(Product);
+                });
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using TCC_APP.Models;
 using TCC_APP.ViewModels;
+using System.Diagnostics;
 
 namespace TCC_APP.Views
 {
@@ -50,6 +51,30 @@ namespace TCC_APP.Views
 
             //// Manually deselect item.
             //ItemsListView.SelectedItem = null;
+        }
+
+        async void Remove_Clicked(object sender, EventArgs args)
+        {
+            try
+            {
+                var button = sender as Button;
+                var produto = button.BindingContext as Produto;
+                var vm = BindingContext as ProdutoDaListaViewModel;
+
+                using (var dados = new AcessoDB())
+                {
+                    dados.DeletarProdutoDaLista(idLista, produto.Id);
+                }
+
+                vm.RemoveCommand.Execute(produto);
+
+                await DisplayAlert("Produto removido", "O produto " + produto.Nome + " foi removido da lista.", "OK");
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
 
         async void AddItem_Clicked(object sender, EventArgs e)
