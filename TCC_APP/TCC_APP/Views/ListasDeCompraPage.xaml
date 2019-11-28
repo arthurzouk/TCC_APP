@@ -5,7 +5,7 @@
              Title="{Binding Title}"
              x:Name="ListaDeCompraPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Clicked="AddItem_Clicked">
+        <ToolbarItem Text="+" Clicked="AddItem_Clicked">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP" Value="add.png"/>
@@ -15,6 +15,14 @@
     </ContentPage.ToolbarItems>
 
     <StackLayout>
+        <SearchBar Placeholder="Procurar..."
+           CancelButtonColor="Orange"
+           PlaceholderColor="LightBlue"
+           TextColor="Orange"
+           HorizontalTextAlignment="Center"
+           FontSize="Medium"
+           FontAttributes="Italic" 
+           TextChanged="OnTextChanged"/>
         <ListView x:Name="ItemsListView"
                 ItemsSource="{Binding Listas}"
                 VerticalOptions="FillAndExpand"

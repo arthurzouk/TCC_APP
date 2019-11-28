@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TCC_APP.Views.DetalhesDaListaDeCompraPage"
+             x:Class="TCC_APP.Views.SupermercadoPage"
              Title="{Binding Title}"
-             x:Name="BrowserDetalhesDaListaPage">
-
+             x:Name="BrowserSupermercadoPage">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="+" Clicked="AddItem_Clicked">
             <ToolbarItem.Icon>
@@ -14,8 +13,8 @@
             </ToolbarItem.Icon>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
-    
-    <StackLayout Spacing="20" Padding="15">
+
+    <StackLayout>
         <SearchBar Placeholder="Procurar..."
            CancelButtonColor="Orange"
            PlaceholderColor="LightBlue"
@@ -24,9 +23,8 @@
            FontSize="Medium"
            FontAttributes="Italic" 
            TextChanged="OnTextChanged"/>
-        <!--Lista de produtos da Lista de compras-->
         <ListView x:Name="ItemsListView"
-                ItemsSource="{Binding ProdutoDaLista}"
+                ItemsSource="{Binding Supermercados}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
                 RefreshCommand="{Binding LoadItemsCommand}"
@@ -34,7 +32,6 @@
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement"
                 ItemSelected="OnItemSelected">
-
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -43,10 +40,10 @@
                                 LineBreakMode="NoWrap" 
                                 Style="{DynamicResource ListItemTextStyle}" 
                                 FontSize="16" />
-                            <Entry Text="{Binding Quantidade}" 
+                            <Label Text="{Binding Distancia}" 
+                                LineBreakMode="NoWrap"
                                 Style="{DynamicResource ListItemDetailTextStyle}"
                                 FontSize="13" />
-                          <Button Text="Remover" Clicked="Remove_Clicked" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

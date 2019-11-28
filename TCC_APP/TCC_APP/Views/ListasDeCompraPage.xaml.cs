@@ -38,6 +38,15 @@ namespace TCC_APP.Views
             ItemsListView.SelectedItem = null;
         }
 
+        void OnTextChanged(object sender, EventArgs args)
+        {
+            SearchBar searchBar = (SearchBar)sender;
+
+            BindingContext = viewModel = new ListasViewModel(searchBar.Text);
+
+            viewModel.LoadItemsCommand.Execute(null);
+        }
+
         async void AddItem_Clicked(object sender, EventArgs args)
         {
             await Navigation.PushModalAsync(new NavigationPage(new NovaListaDeCompraPage()));

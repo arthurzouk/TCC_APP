@@ -10,15 +10,15 @@ using Xamarin.Forms;
 
 namespace TCC_APP.ViewModels
 {
-    class ProdutosViewModel : BaseViewModel
+    class SupermercadosViewModel : BaseViewModel
     {
-        public ObservableCollection<Produto> Produtos { get; set; }
+        public ObservableCollection<Supermercado> Supermercados { get; set; }
         public Command LoadItemsCommand { get; set; }
 
-        public ProdutosViewModel(string palavraDebusca = null)
+        public SupermercadosViewModel(string palavraDebusca = null)
         {
-            Title = "Produtos";
-            Produtos = new ObservableCollection<Produto>();
+            Title = "Supermercados";
+            Supermercados = new ObservableCollection<Supermercado>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand(palavraDebusca));
         }
 
@@ -31,19 +31,18 @@ namespace TCC_APP.ViewModels
 
             try
             {
-                Produtos.Clear();
-                //var items = await ProdutoDataStore.GetItemsAsync("teste");
+                Supermercados.Clear();
 
-                List<Produto> items = null;
+                List<Supermercado> items = null;
 
                 using (var dados = new AcessoDB())
                 {
-                     items = string.IsNullOrEmpty(palavraDebusca) ? dados.GetAllProduto() : dados.BuscaProduto(palavraDebusca);
+                    items = string.IsNullOrEmpty(palavraDebusca) ? dados.GetAllSupermercado() : dados.BuscaSupermercado(palavraDebusca);
                 }
 
                 foreach (var item in items)
                 {
-                    Produtos.Add(item);
+                    Supermercados.Add(item);
                 }
             }
             catch (Exception ex)

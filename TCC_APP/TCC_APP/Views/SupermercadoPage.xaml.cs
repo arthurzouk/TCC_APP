@@ -11,32 +11,32 @@ using Xamarin.Forms.Xaml;
 namespace TCC_APP.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ProdutoPage : ContentPage
+	public partial class SupermercadoPage : ContentPage
 	{
-        ProdutosViewModel viewModel;
+        SupermercadosViewModel viewModel;
 
-        public ProdutoPage()
+        public SupermercadoPage ()
 		{
-			InitializeComponent ();
-            BindingContext = viewModel = new ProdutosViewModel();
+            InitializeComponent();
+            BindingContext = viewModel = new SupermercadosViewModel();
         }
 
         void OnTextChanged(object sender, EventArgs args)
         {
             SearchBar searchBar = (SearchBar)sender;
 
-            BindingContext = viewModel = new ProdutosViewModel(searchBar.Text);
+            BindingContext = viewModel = new SupermercadosViewModel(searchBar.Text);
 
             viewModel.LoadItemsCommand.Execute(null);
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var item = args.SelectedItem as Produto;
+            var item = args.SelectedItem as Supermercado;
             if (item == null)
                 return;
 
-            await Navigation.PushAsync(new DetalhesDoProdutoPage(new ItemDetailViewModel(item)));
+            await Navigation.PushAsync(new DetalhesDoSupermercadoPage(new ItemDetailViewModel(item)));
 
             // Manually deselect item.
             ItemsListView.SelectedItem = null;
@@ -44,7 +44,7 @@ namespace TCC_APP.Views
 
         async void AddItem_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new NavigationPage(new NovoProdutoPage()));
+            await Navigation.PushModalAsync(new NavigationPage(new NovoSupermercadoPage()));
         }
 
         protected override void OnAppearing()

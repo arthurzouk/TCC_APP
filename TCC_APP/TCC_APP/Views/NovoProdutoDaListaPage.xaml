@@ -4,7 +4,24 @@
              x:Class="TCC_APP.Views.NovoProdutoDaListaPage"
              Title="{Binding Title}"
              x:Name="BrowserProdutoDaListaPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Cancel" Clicked="Cancel_Clicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="cancel.png"/>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <StackLayout>
+        <SearchBar Placeholder="Procurar..."
+           CancelButtonColor="Orange"
+           PlaceholderColor="LightBlue"
+           TextColor="Orange"
+           HorizontalTextAlignment="Center"
+           FontSize="Medium"
+           FontAttributes="Italic" 
+           TextChanged="OnTextChanged"/>
         <ListView x:Name="ItemsListView"
                 ItemsSource="{Binding Produtos}"
                 VerticalOptions="FillAndExpand"

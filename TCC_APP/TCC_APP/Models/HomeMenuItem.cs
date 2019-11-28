@@ -8,6 +8,7 @@ namespace TCC_APP.Models
     {
         Listas,
         Produtos,
+        Supermercados,
         Relatorios
     }
     public class HomeMenuItem

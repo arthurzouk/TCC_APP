@@ -20,6 +20,7 @@ namespace TCC_APP.Views
             {
                 new HomeMenuItem {Id = MenuItemType.Listas, Title="Listas de Compra" },
                 new HomeMenuItem {Id = MenuItemType.Produtos, Title="Produtos" },
+                new HomeMenuItem {Id = MenuItemType.Supermercados, Title="Supermercados" },
                 new HomeMenuItem {Id = MenuItemType.Relatorios, Title="Relatórios" }
             };
 
@@ -42,6 +43,9 @@ namespace TCC_APP.Views
                         await Navigation.PushAsync(new ProdutoPage());
                         break;
                     case 2:
+                        await Navigation.PushAsync(new SupermercadoPage());
+                        break;
+                    case 3:
                         await Navigation.PushAsync(new RelatorioLista());
                         break;
                     default:

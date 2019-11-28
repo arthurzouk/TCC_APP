@@ -35,6 +35,15 @@ namespace TCC_APP.Views
             ((ListView)sender).SelectedItem = null;
         }
 
+        void OnTextChanged(object sender, EventArgs args)
+        {
+            SearchBar searchBar = (SearchBar)sender;
+
+            BindingContext = viewModel = new ProdutosViewModel(searchBar.Text);
+
+            viewModel.LoadItemsCommand.Execute(null);
+        }
+
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
             var item = args.SelectedItem as Produto;
@@ -59,6 +68,11 @@ namespace TCC_APP.Views
 
             // Manually deselect item.
             //ItemsListView.SelectedItem = null;
+        }
+
+        async void Cancel_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PopModalAsync();
         }
 
         protected override void OnAppearing()

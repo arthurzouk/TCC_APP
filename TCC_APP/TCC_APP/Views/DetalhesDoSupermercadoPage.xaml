@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TCC_APP.Views.DetalhesDoSupermercadoPage"
+             Title="{Binding Title}">
+    <StackLayout Spacing="20" Padding="15">
+        <Label Text="Nome:" FontSize="Medium" />
+        <Label Text="{Binding ItemSupermercado.Nome}" FontSize="Small"/>
+        <Label Text="Distância:" FontSize="Medium" />
+        <Label Text="{Binding ItemSupermercado.Distancia}" FontSize="Small"/>
+    </StackLayout>
+</ContentPage>

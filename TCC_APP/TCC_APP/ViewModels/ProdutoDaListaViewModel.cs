@@ -16,15 +16,15 @@ namespace TCC_APP.ViewModels
         public Command LoadItemsCommand { get; set; }
         public string idDeBusca;
 
-        public ProdutoDaListaViewModel(string idDeBusca)
+        public ProdutoDaListaViewModel(string idDeBusca, string palavraDebusca = null)
         {
             Title = "Produtos da Lista";
             this.idDeBusca = idDeBusca;
             ProdutoDaLista = new ObservableCollection<Produto>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand(palavraDebusca));
         }
 
-        async Task ExecuteLoadItemsCommand()
+        async Task ExecuteLoadItemsCommand(string palavraDebusca = null)
         {
             if (IsBusy)
                 return;
@@ -51,10 +51,11 @@ namespace TCC_APP.ViewModels
                         produto = dados.GetProduto(item.IdProduto);
                     }
 
-                    if (produto != null)
+                    if (produto != null && (string.IsNullOrEmpty(palavraDebusca)
+                       || produto.Nome.ToUpper().Contains(palavraDebusca.ToUpper())))
                     {
                         ProdutoDaLista.Add(produto);
-                    }                    
+                    }
 
                     produto = null;
                 }
@@ -73,7 +74,8 @@ namespace TCC_APP.ViewModels
         {
             get
             {
-                return new Command<Produto>((Product) => {
+                return new Command<Produto>((Product) =>
+                {
                     ProdutoDaLista.Remove(Product);
                 });
             }

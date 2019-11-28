@@ -16,14 +16,14 @@ namespace TCC_APP.ViewModels
         public ObservableCollection<ListaDeCompra> Listas { get; set; }
         public Command LoadItemsCommand { get; set; }
 
-        public ListasViewModel()
+        public ListasViewModel(string busca = null)
         {
             Title = "Listas de compra";
             Listas = new ObservableCollection<ListaDeCompra>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand(busca));
         }
 
-        async Task ExecuteLoadItemsCommand()
+        async Task ExecuteLoadItemsCommand(string busca = null)
         {
             if (IsBusy)
                 return;
@@ -33,13 +33,12 @@ namespace TCC_APP.ViewModels
             try
             {
                 Listas.Clear();
-                //var items = await ListaDataStore.GetItemsAsync("teste");
 
                 List<ListaDeCompra> items = null;
 
                 using (var dados = new AcessoDB())
                 {
-                    items = dados.GetAllListaDeCompra();
+                    items = string.IsNullOrEmpty(busca) ? dados.GetAllListaDeCompra() : dados.BuscaListaDeCompra(busca);
                 }
 
                 foreach (var item in items)

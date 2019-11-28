@@ -41,6 +41,15 @@ namespace TCC_APP.Views
             //BindingContext = viewModel;
         }
 
+        void OnTextChanged(object sender, EventArgs args)
+        {
+            SearchBar searchBar = (SearchBar)sender;
+
+            BindingContext = viewModel = new ProdutoDaListaViewModel(idLista, searchBar.Text);
+
+            viewModel.LoadItemsCommand.Execute(null);
+        }
+
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
             //var item = args.SelectedItem as ListaDeCompra;

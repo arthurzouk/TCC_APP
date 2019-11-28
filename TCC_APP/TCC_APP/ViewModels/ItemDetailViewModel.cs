@@ -8,6 +8,7 @@ namespace TCC_APP.ViewModels
     {
         public ListaDeCompra ItemLista { get; set; }
         public Produto ItemProduto { get; set; }
+        public Supermercado ItemSupermercado { get; set; }
 
         public ItemDetailViewModel(ListaDeCompra item = null)
         {
@@ -19,6 +20,12 @@ namespace TCC_APP.ViewModels
         {
             Title = item?.Nome;
             ItemProduto = item;
+        }
+
+        public ItemDetailViewModel(Supermercado item = null)
+        {
+            Title = item?.Nome;
+            ItemSupermercado = item;
         }
     }
 }

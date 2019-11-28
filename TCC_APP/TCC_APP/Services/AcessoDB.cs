@@ -20,8 +20,8 @@ namespace TCC_APP
             conexaoSQLite.CreateTable<Produto>();
             conexaoSQLite.CreateTable<ListaDeCompra>();
             conexaoSQLite.CreateTable<ProdutoDaLista>();
-            conexaoSQLite.CreateTable<HistoricoDeCompra>();            
-
+            conexaoSQLite.CreateTable<HistoricoDeCompra>();
+            conexaoSQLite.CreateTable<Supermercado>();
         }
         #region CRUD padrão usuário
         public void InserirUsuario(Usuario usuario)
@@ -40,6 +40,7 @@ namespace TCC_APP
         {
             return conexaoSQLite.Table<Usuario>().FirstOrDefault(c => c.LoginUsuario == loginUsuario);
         }
+
         public List<Usuario> GetUsuarios()
         {
             return conexaoSQLite.Table<Usuario>().OrderBy(c => c.LoginUsuario).ToList();
@@ -61,6 +62,50 @@ namespace TCC_APP
         //    conexaoSQLite.Delete(usuario);
         //}
         #endregion
+        #region Gets Produto
+        public Produto GetProduto(string id)
+        {
+            return conexaoSQLite.Table<Produto>().FirstOrDefault(c => c.Id == id);
+        }
+        internal List<Produto> BuscaProduto(string palavraDebusca)
+        {
+            return conexaoSQLite.Table<Produto>().Where(c => c.Nome.ToUpper().Contains(palavraDebusca.ToUpper())).ToList();
+        }
+        public List<Produto> GetAllProduto()
+        {
+            return conexaoSQLite.Table<Produto>().OrderBy(c => c.Id).ToList();
+        }
+        #endregion
+
+        #region CRUD Supermercado
+
+        public void InserirSupermercado(Supermercado supermercado)
+        {
+            conexaoSQLite.Insert(supermercado);
+        }
+        //public void AtualizarUsuario(Usuario usuario)
+        //{
+        //    conexaoSQLite.Update(usuario);
+        //}
+        //public void DeletarUsuario(Usuario usuario)
+        //{
+        //    conexaoSQLite.Delete(usuario);
+        //}
+        #endregion
+        #region Gets Supermercado
+        public Produto GetSupermercado(string id)
+        {
+            return conexaoSQLite.Table<Produto>().FirstOrDefault(c => c.Id == id);
+        }
+        internal List<Supermercado> BuscaSupermercado(string palavraDebusca)
+        {
+            return conexaoSQLite.Table<Supermercado>().Where(c => c.Nome.ToUpper().Contains(palavraDebusca.ToUpper())).ToList();
+        }
+        public List<Supermercado> GetAllSupermercado()
+        {
+            return conexaoSQLite.Table<Supermercado>().OrderBy(c => c.Id).ToList();
+        }
+        #endregion
 
         #region CRUD ProdutoDaLista
 
@@ -74,6 +119,17 @@ namespace TCC_APP
         }
 
         #endregion
+        #region Gets ProdutoDaLista
+        public ProdutoDaLista GetProdutoDaLista(string id)
+        {
+            //modificar criterio de busca
+            return conexaoSQLite.Table<ProdutoDaLista>().FirstOrDefault(c => c.Id == id);
+        }
+        public List<ProdutoDaLista> GetAllProdutoDaLista(string idLista)
+        {
+            return conexaoSQLite.Table<ProdutoDaLista>().Where(c => c.IdListaDeCompra == idLista).ToList();
+        }
+        #endregion
 
         #region CRUD ListaDeCompra
 
@@ -84,61 +140,21 @@ namespace TCC_APP
         public void DeletarListaDeCompra(string idLista)
         {
             conexaoSQLite.Table<ListaDeCompra>().Delete(x => x.Id == idLista);
-            //conexaoSQLite.Delete(lista);
         }
 
         #endregion
-
-        #region CRUD genérico
-        public void Atualizar(object objeto)
-        {
-            conexaoSQLite.Update(objeto);
-        }
-        public void Deletar(object objeto)
-        {
-            conexaoSQLite.Query<ListaDeCompra>("DELETE FROM [ListaDeCompra] WHERE [id] IS NULL ");
-            //conexaoSQLite.Delete(objeto);
-        }
-        #endregion
-
         #region Gets ListaDeCompra
         public ListaDeCompra GetListaDeCompra(string id)
         {
             return conexaoSQLite.Table<ListaDeCompra>().FirstOrDefault(c => c.Id == id);
         }
+        internal List<ListaDeCompra> BuscaListaDeCompra(string busca)
+        {
+            return conexaoSQLite.Table<ListaDeCompra>().Where(c => c.Nome.ToUpper().Contains(busca.ToUpper())).ToList();
+        }
         public List<ListaDeCompra> GetAllListaDeCompra()
         {
             return conexaoSQLite.Table<ListaDeCompra>().OrderBy(c => c.Id).ToList();
-        }
-        #endregion
-        #region Gets Produto
-        public Produto GetProduto(string id)
-        {
-            return conexaoSQLite.Table<Produto>().FirstOrDefault(c => c.Id == id);
-        }
-        public List<Produto> GetAllProduto()
-        {
-            return conexaoSQLite.Table<Produto>().OrderBy(c => c.Id).ToList();
-        }
-        #endregion
-        #region Gets ProdutoDaLista
-        public ProdutoDaLista GetProdutoDaLista(string id)
-        {
-            //modificar criterio de busca
-            return conexaoSQLite.Table<ProdutoDaLista>().FirstOrDefault(c => c.Id == id);
-        }
-        public List<ProdutoDaLista> GetAllProdutoDaLista(string idLista)
-        {
-            return conexaoSQLite.Table<ProdutoDaLista>().Where(c => c.IdListaDeCompra == idLista).ToList();
-
-            //var q = conexaoSQLite.Query<ProdutoDaLista>(
-            //    "select p.Nome, p._img, pdl.Quantidade from ProdutoDaLista pdl"
-            //    + " inner join Produto p"
-            //    + " on pdl.IdProduto = p.Id where pdl.IdListaDeCompra = ?",
-            //    idLista).ToList();
-            //return q; 
-            //.Select(x => new ProdutosDaLista_Result { _nomeProduto = x.Nome, _img = x._img, _quantidade = x._quantidade });
-            //return conexaoSQLite.Table<ProdutoDaLista>().OrderBy(c => c.Id).ToList();
         }
         #endregion
 
