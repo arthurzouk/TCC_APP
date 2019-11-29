@@ -3,12 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TCC_APP.Views.DetalhesDoSupermercadoPage"
              Title="{Binding Title}">
-    <StackLayout Spacing="20" Padding="15">
-        <Label Text="Nome:" FontSize="Medium" />
-        <Label Text="{Binding ItemSupermercado.Nome}" FontSize="Small"/>
-        <Label Text="Distância:" FontSize="Medium" />
-        <Label Text="{Binding ItemSupermercado.Distancia}" FontSize="Small"/>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="+" Clicked="AddItem_Clicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="add.png"/>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
 
+    <StackLayout Spacing="20" Padding="15">
         <SearchBar Placeholder="Procurar..."
            CancelButtonColor="Orange"
            PlaceholderColor="LightBlue"

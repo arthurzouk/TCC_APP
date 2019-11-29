@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +41,29 @@ namespace TCC_APP.Views
 
             // Manually deselect item.
             ItemsListView.SelectedItem = null;
+        }
+
+        async void Remove_Clicked(object sender, EventArgs args)
+        {
+            try
+            {
+                var button = sender as Button;
+                var produto = button.BindingContext as Produto;
+                var vm = BindingContext as ListasViewModel;
+                vm.RemoveCommand.Execute(produto);
+
+                using (var dados = new AcessoDB())
+                {
+                    dados.DeletarListaDeCompra(produto.Id);
+                }
+
+                await DisplayAlert("Lista de compras deletada", "A lista " + produto.Nome + " foi deletada.", "OK");
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
 
         async void AddItem_Clicked(object sender, EventArgs e)

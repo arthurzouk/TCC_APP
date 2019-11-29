@@ -36,9 +36,6 @@ namespace TCC_APP.Views
                 Nome = "Nova produto"
                 //Quantidade = "1"
             };
-
-            //viewModel = new ItemDetailViewModel(item);
-            //BindingContext = viewModel;
         }
 
         void OnTextChanged(object sender, EventArgs args)

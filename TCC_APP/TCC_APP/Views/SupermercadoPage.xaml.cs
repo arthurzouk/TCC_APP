@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace TCC_APP.Views
             if (item == null)
                 return;
 
-            await Navigation.PushAsync(new DetalhesDoSupermercadoPage(new ItemDetailViewModel(item)));
+            await Navigation.PushAsync(new DetalhesDoSupermercadoPage(new ItemDetailViewModel(item), item.Nome, item.Id));
 
             // Manually deselect item.
             ItemsListView.SelectedItem = null;
@@ -45,6 +46,29 @@ namespace TCC_APP.Views
         async void AddItem_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushModalAsync(new NavigationPage(new NovoSupermercadoPage()));
+        }
+
+        async void Remove_Clicked(object sender, EventArgs args)
+        {
+            try
+            {
+                var button = sender as Button;
+                var listaDeCompra = button.BindingContext as Supermercado;
+                var vm = BindingContext as SupermercadosViewModel;
+                vm.RemoveCommand.Execute(listaDeCompra);
+
+                using (var dados = new AcessoDB())
+                {
+                    dados.DeletarSupermercado(listaDeCompra.Id);
+                }
+
+                await DisplayAlert("Supermercado deletado", "A supermercado " + listaDeCompra.Nome + " foi deletado.", "OK");
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
 
         protected override void OnAppearing()

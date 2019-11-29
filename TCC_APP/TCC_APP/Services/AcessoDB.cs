@@ -22,6 +22,7 @@ namespace TCC_APP
             conexaoSQLite.CreateTable<ProdutoDaLista>();
             conexaoSQLite.CreateTable<HistoricoDeCompra>();
             conexaoSQLite.CreateTable<Supermercado>();
+            conexaoSQLite.CreateTable<ProdutoDoSupermercado>();
         }
 
         #region CRUD padrão usuário
@@ -88,10 +89,10 @@ namespace TCC_APP
         //{
         //    conexaoSQLite.Update(usuario);
         //}
-        //public void DeletarUsuario(Usuario usuario)
-        //{
-        //    conexaoSQLite.Delete(usuario);
-        //}
+        internal void DeletarSupermercado(string id)
+        {
+            conexaoSQLite.Table<Supermercado>().Delete(x => x.Id == id);
+        }
         #endregion
         #region Gets Supermercado
         public Produto GetSupermercado(string id)
@@ -161,11 +162,22 @@ namespace TCC_APP
         #endregion
 
 
-
-        internal List<ProdutoDoSupermercado> GetAllProdutoSupermercado(string idSupermercado)
+        #region CRUD ProdutoDoSupermercado
+        internal void inserirProdutoDoSupermercado(ProdutoDoSupermercado novoProdutoDoSupermercado)
+        {
+            conexaoSQLite.Insert(novoProdutoDoSupermercado);
+        }
+        public void DeletarProdutoDoSupermercado(string idSupermercado, string idProduto)
+        {
+            conexaoSQLite.Table<ProdutoDoSupermercado>().Delete(x => x.IdSupermercado == idSupermercado && x.IdProduto == idProduto);
+        }
+        #endregion
+        #region GET ProdutoDoSupermercado
+        internal List<ProdutoDoSupermercado> GetAllProdutoDoSupermercado(string idSupermercado)
         {
             return conexaoSQLite.Table<ProdutoDoSupermercado>().Where(c => c.IdSupermercado == idSupermercado).ToList();
         }
+        #endregion
 
         public void Dispose()
         {
