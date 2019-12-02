@@ -48,16 +48,16 @@ namespace TCC_APP.Views
             try
             {
                 var button = sender as Button;
-                var produto = button.BindingContext as Produto;
-                var vm = BindingContext as ListasViewModel;
+                var produto = button.BindingContext as ProdutoDoSupermercado;
+                var vm = BindingContext as ProdutosViewModel;
                 vm.RemoveCommand.Execute(produto);
 
                 using (var dados = new AcessoDB())
                 {
-                    dados.DeletarListaDeCompra(produto.Id);
+                    dados.DeletarProduto(produto.idProduto);
                 }
 
-                await DisplayAlert("Lista de compras deletada", "A lista " + produto.Nome + " foi deletada.", "OK");
+                await DisplayAlert("Produto removido", "O produto " + produto.NomeProduto + " foi removido do " + produto.NomeSupermercado + ".", "OK");
 
             }
             catch (Exception ex)
@@ -68,7 +68,21 @@ namespace TCC_APP.Views
 
         async void AddItem_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new NavigationPage(new NovoProdutoPage()));
+            List<Supermercado> supermercados = null;
+
+            using (var dados = new AcessoDB())
+            {
+                supermercados = dados.GetAllSupermercado();
+            }
+
+            if (supermercados.Count == 0)
+            {
+                await DisplayAlert("Nenhum supermercado encontrado.", "Por favor adicione mais supermercados", "OK");
+            }
+            else
+            {
+                await Navigation.PushModalAsync(new NavigationPage(new NovoProdutoPage()));
+            }            
         }
 
         protected override void OnAppearing()

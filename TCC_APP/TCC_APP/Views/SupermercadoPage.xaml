@@ -39,16 +39,33 @@
                             <Label Text="{Binding Nome}" 
                                 LineBreakMode="NoWrap" 
                                 Style="{DynamicResource ListItemTextStyle}" 
-                                FontSize="16" />
-                            <Label Text="{Binding Distancia}" 
+                                FontSize="16"
+                                FontAttributes="Bold" />
+                                <Label Text="{Binding Bairro}" 
                                 LineBreakMode="NoWrap"
                                 Style="{DynamicResource ListItemDetailTextStyle}"
                                 FontSize="13" />
-                            <Button Text="Remover" Clicked="Remove_Clicked" />
+                                <Label Text="{Binding Cidade}" 
+                                LineBreakMode="NoWrap"
+                                Style="{DynamicResource ListItemDetailTextStyle}"
+                                FontSize="13" />
+                            <Label Text="{Binding Distancia, StringFormat='Km: {0}'}" 
+                                LineBreakMode="NoWrap"
+                                Style="{DynamicResource ListItemDetailTextStyle}"
+                                FontSize="13" />
+                            <Button Text="Remover" 
+                                Clicked="Remove_Clicked" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <ListView.FooterTemplate>
+                <DataTemplate>
+                    <ContentView BackgroundColor="Beige">
+                        <Label Margin="16"  HorizontalOptions="CenterAndExpand" Text="Total de Contatos: à fazer" /> <!--"{Binding ItemsCount, StringFormat='Total de Contatos: {0}'}" />-->
+                    </ContentView>
+                </DataTemplate>
+            </ListView.FooterTemplate>
         </ListView>
     </StackLayout>
 </ContentPage>

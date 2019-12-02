@@ -24,7 +24,7 @@
            FontAttributes="Italic" 
            TextChanged="OnTextChanged"/>
         <ListView x:Name="ItemsListView"
-                ItemsSource="{Binding Produtos}"
+                ItemsSource="{Binding _produtos}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
                 RefreshCommand="{Binding LoadItemsCommand}"
@@ -36,11 +36,19 @@
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Padding="10">
-                            <Label Text="{Binding Nome}" 
+                            <Label Text="{Binding NomeProduto}" 
                                 LineBreakMode="NoWrap" 
                                 Style="{DynamicResource ListItemTextStyle}" 
                                 FontSize="16" />
                             <Label Text="{Binding Preco}" 
+                                LineBreakMode="NoWrap"
+                                Style="{DynamicResource ListItemDetailTextStyle}"
+                                FontSize="13" />
+                            <Label Text="{Binding MarcaProduto}" 
+                                LineBreakMode="NoWrap"
+                                Style="{DynamicResource ListItemDetailTextStyle}"
+                                FontSize="13" />
+                            <Label Text="{Binding NomeSupermercado}" 
                                 LineBreakMode="NoWrap"
                                 Style="{DynamicResource ListItemDetailTextStyle}"
                                 FontSize="13" />

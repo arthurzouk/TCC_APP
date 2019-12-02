@@ -25,7 +25,7 @@ namespace TCC_APP.Views
             BindingContext = this.viewModel = new ProdutosViewModel();
         }
 
-        async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
+        async void OnItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (e.Item == null)
                 return;
@@ -56,9 +56,8 @@ namespace TCC_APP.Views
 
                 ProdutoDoSupermercado novoProdutoDoSupermercado = new ProdutoDoSupermercado
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    IdSupermercado = idSupermercado,
-                    IdProduto = item.Id
+                    NomeSupermercado = idSupermercado,
+                    NomeProduto = item.Id
                 };
 
                 using (var dados = new AcessoDB())

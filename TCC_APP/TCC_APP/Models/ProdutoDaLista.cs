@@ -14,7 +14,7 @@ namespace TCC_APP.Models
         public string IdProduto { get; set; }
         [MaxLength(50)]
         public string IdListaDeCompra { get; set; }
-        [MaxLength(50)]
-        public string Quantidade { get; set; }
+        [MaxLength(2)]
+        public string qtdProduto { get; set; }
     }
 }

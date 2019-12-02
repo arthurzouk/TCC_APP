@@ -30,12 +30,6 @@ namespace TCC_APP.Views
         public DetalhesDaListaDeCompraPage()
         {
             InitializeComponent();
-
-            var item = new Produto
-            {
-                Nome = "Nova produto"
-                //Quantidade = "1"
-            };
         }
 
         void OnTextChanged(object sender, EventArgs args)
@@ -85,7 +79,7 @@ namespace TCC_APP.Views
 
         async void AddItem_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new NavigationPage(new NovoProdutoDaListaPage(idLista)));
+            await Navigation.PushModalAsync(new NavigationPage(new NovoProdutoDaListaPage(idLista, rangeEntry.Text)));
         }
 
         protected override void OnAppearing()
@@ -93,6 +87,8 @@ namespace TCC_APP.Views
             base.OnAppearing();
 
             viewModel.LoadItemsCommand.Execute(null);
+
+            //System.Collections.IEnumerable teste = ItemsListView.ItemsSource;
         }
     }
 }

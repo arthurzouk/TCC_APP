@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TCC_APP.Views.NovoProdutoPage"
              Title="Novo Produto">
-    
+
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Cancel" Clicked="Cancel_Clicked">
             <ToolbarItem.Icon>
@@ -24,11 +24,25 @@
     <ContentPage.Content>
         <StackLayout Spacing="20" Padding="15">
             <Label Text="Nome" FontSize="Medium" />
-            <Entry Text="{Binding Item.Nome}" FontSize="Small" />
-            <!--<Label Text="Preço" FontSize="Medium" />-->
-            <Label Text="Quantidade" FontSize="Medium" />
-            <Entry Text="1" FontSize="Small" Margin="0" />
-            <!--<Entry Text="{Binding Item.Preco}" FontSize="Small" Margin="0" />-->
+            <Entry x:Name="nomeEntry"
+                Placeholder="Informe o produto" 
+                FontSize="Small" />
+            <Label Text="Marca" FontSize="Medium" />
+            <Entry x:Name="marcaEntry"
+                Placeholder="Informe a marca" 
+                FontSize="Small" />
+            <Label Text="Preço" FontSize="Medium" />
+            <Entry x:Name ="precoEntry" 
+                   FontSize="Small" 
+                   Keyboard="Numeric" 
+                   TextChanged="OnTextPriceChanged" />
+            <Label Text="Supermercado" FontSize="Medium" />
+            <Picker x:Name="supPicker"
+                Title="Selecione o supermercado"
+                ItemDisplayBinding="{Binding Nome}"
+                TitleColor="Red" >
+
+            </Picker>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
 using TCC_APP.Models;
@@ -12,7 +13,7 @@ namespace TCC_APP.ViewModels
 {
     class ProdutoDaListaViewModel : BaseViewModel
     {
-        public ObservableCollection<Produto> ProdutoDaLista { get; set; }
+        public ObservableCollection<DetalhesProdutoDaLista> _produtoDaLista { get; set; }
         public Command LoadItemsCommand { get; set; }
         public string idDeBusca;
 
@@ -20,7 +21,7 @@ namespace TCC_APP.ViewModels
         {
             Title = "Produtos da Lista";
             this.idDeBusca = idDeBusca;
-            ProdutoDaLista = new ObservableCollection<Produto>();
+            _produtoDaLista = new ObservableCollection<DetalhesProdutoDaLista>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand(palavraDebusca));
         }
 
@@ -33,10 +34,11 @@ namespace TCC_APP.ViewModels
 
             try
             {
-                ProdutoDaLista.Clear();
+                _produtoDaLista.Clear();
 
                 List<ProdutoDaLista> tabelaRelacional = null;
                 Produto produto = null;
+                Supermercado supermercado = null;
 
 
                 using (var dados = new AcessoDB())
@@ -54,7 +56,22 @@ namespace TCC_APP.ViewModels
                     if (produto != null && (string.IsNullOrEmpty(palavraDebusca)
                        || produto.Nome.ToUpper().Contains(palavraDebusca.ToUpper())))
                     {
-                        ProdutoDaLista.Add(produto);
+                        using (var dados = new AcessoDB())
+                        {
+                            supermercado = dados.GetSupermercado(produto.IdSupermercado);
+                        }
+
+                        DetalhesProdutoDaLista produtoDaLista = new DetalhesProdutoDaLista()
+                        {
+                            idProdutoDaLista = item.Id,
+                            nomeProduto = produto.Nome,
+                            marcaProduto = produto.Marca,
+                            QtdProduto = item.qtdProduto != null ? (item.qtdProduto) : "1",
+                            nomeSupermercado = supermercado.Nome,
+                            preco = produto.Preco.ToString("C", CultureInfo.CurrentCulture)
+                        };
+
+                        _produtoDaLista.Add(produtoDaLista);
                     }
 
                     produto = null;
@@ -70,13 +87,13 @@ namespace TCC_APP.ViewModels
             }
         }
 
-        public Command<Produto> RemoveCommand
+        public Command<DetalhesProdutoDaLista> RemoveCommand
         {
             get
             {
-                return new Command<Produto>((Product) =>
+                return new Command<DetalhesProdutoDaLista>((Product) =>
                 {
-                    ProdutoDaLista.Remove(Product);
+                    _produtoDaLista.Remove(Product);
                 });
             }
         }

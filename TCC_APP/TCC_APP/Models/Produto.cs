@@ -12,11 +12,16 @@ namespace TCC_APP.Models
         [MaxLength(50)]
         public string Id { get; set; }
         [MaxLength(100)]
+        public string IdSupermercado { get; set; }
+        [MaxLength(100)]
         public string Nome { get; set; }
         [MaxLength(100)]
         public string Marca { get; set; }
         [MaxLength(100)]
+        public double Preco { get; set; }
+        [MaxLength(100)]
         public string _img { get; set; }
+
 
         public override string ToString()
         {

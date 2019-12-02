@@ -9,12 +9,18 @@ namespace TCC_APP.Models
     public class ProdutoDoSupermercado
     {
         [MaxLength(50)]
-        public string Id { get; set; }
+        public string idProduto { get; set; }
         [MaxLength(50)]
-        public string IdProduto { get; set; }
+        public string NomeProduto { get; set; }
         [MaxLength(50)]
-        public string IdSupermercado { get; set; }
-        [MaxLength(50)]
-        public string Quantidade { get; set; }
+        public string NomeSupermercado { get; set; }
+        [MaxLength(100)]
+        public string MarcaProduto { get; set; }
+        [MaxLength(100)]
+        public string Preco { get; set; }
+        [MaxLength(100)]
+        public string _imgProduto { get; set; }
+        [MaxLength(10)]
+        public int distancia { get; set; }
     }
 }

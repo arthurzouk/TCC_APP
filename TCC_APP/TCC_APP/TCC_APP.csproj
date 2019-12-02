@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\ProdutosDaLista_Result.cs" />
     <Compile Remove="Views\NovoSupermercadoPageDetail.xaml.cs" />
     <Compile Remove="Views\NovoSupermercadoPageMaster.xaml.cs" />
     <Compile Remove="Views\NovoSupermercadoPageMenuItem.cs" />
@@ -24,7 +25,8 @@
     <PackageReference Include="Microcharts" Version="0.7.1" />
     <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
     <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
-    <PackageReference Include="Xamarin.Forms" Version="3.6.0.344457" />  
+    <PackageReference Include="Xamarin.Forms" Version="3.6.0.344457" />
+    <PackageReference Include="Xamarin.Forms.ConvertersPack" Version="1.0.0" />  
   </ItemGroup>
 
   <ItemGroup>

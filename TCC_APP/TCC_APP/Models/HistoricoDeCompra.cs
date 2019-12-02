@@ -17,11 +17,7 @@ namespace TCC_APP.Models
         [MaxLength(50)]
         public string Preco { get; set; }
         [MaxLength(50)]
-        public string Supermercado { get; set; }
-        [MaxLength(50)]
-        public string Bairro { get; set; }
-        [MaxLength(50)]
-        public string Cidade { get; set; }
+        public string IdSupermercado { get; set; }
         [MaxLength(50)]
         public DateTime Data { get; set; }
     }

@@ -20,6 +20,8 @@ namespace TCC_APP.Views
             Item = new Supermercado
             {
                 Nome = "Novo Supermercado",
+                Bairro = "Bairro",
+                Cidade = "Cidade",
                 Distancia = 0
             };
 
@@ -32,6 +34,8 @@ namespace TCC_APP.Views
             {
                 Id = Guid.NewGuid().ToString(),
                 Nome = Item.Nome,
+                Bairro = Item.Bairro,
+                Cidade = Item.Cidade,
                 Distancia = Item.Distancia
             };
 

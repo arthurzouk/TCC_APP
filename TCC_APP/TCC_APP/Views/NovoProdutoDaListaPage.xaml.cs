@@ -15,13 +15,15 @@ namespace TCC_APP.Views
     {
         ProdutosViewModel viewModel;
         string idLista = string.Empty;
+        string distancia;
 
-        public NovoProdutoDaListaPage(string idLista)
+        public NovoProdutoDaListaPage(string idLista, string distancia = null)
         {
             InitializeComponent();
 
             this.idLista = idLista;
-            BindingContext = this.viewModel = new ProdutosViewModel();
+            this.distancia = distancia;
+            BindingContext = this.viewModel = new ProdutosViewModel(null, distancia, idLista);
         }
 
         async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
@@ -39,14 +41,14 @@ namespace TCC_APP.Views
         {
             SearchBar searchBar = (SearchBar)sender;
 
-            BindingContext = viewModel = new ProdutosViewModel(searchBar.Text);
+            BindingContext = viewModel = new ProdutosViewModel(searchBar.Text, distancia, idLista);
 
             viewModel.LoadItemsCommand.Execute(null);
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var item = args.SelectedItem as Produto;
+            var item = args.SelectedItem as ProdutoDoSupermercado;
             if (item == null)
                 return;
 
@@ -55,7 +57,8 @@ namespace TCC_APP.Views
             {
                 Id = Guid.NewGuid().ToString(),
                 IdListaDeCompra = idLista,
-                IdProduto = item.Id
+                IdProduto = item.idProduto,
+                qtdProduto = "0"
             };
 
             using (var dados = new AcessoDB())

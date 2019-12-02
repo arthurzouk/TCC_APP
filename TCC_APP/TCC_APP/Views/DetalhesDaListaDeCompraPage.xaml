@@ -24,9 +24,15 @@
            FontSize="Medium"
            FontAttributes="Italic" 
            TextChanged="OnTextChanged"/>
+        <Label Text="Range" 
+                Grid.Column="1" />
+        <Entry x:Name="rangeEntry"
+                Placeholder="0"
+                Keyboard="Numeric"
+                Grid.Column="2" />
         <!--Lista de produtos da Lista de compras-->
         <ListView x:Name="ItemsListView"
-                ItemsSource="{Binding ProdutoDaLista}"
+                ItemsSource="{Binding _produtoDaLista}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
                 RefreshCommand="{Binding LoadItemsCommand}"
@@ -39,12 +45,26 @@
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Padding="10">
-                            <Label Text="{Binding Nome}" 
+                            <Label Text="{Binding nomeProduto}" 
                                 LineBreakMode="NoWrap" 
                                 Style="{DynamicResource ListItemTextStyle}" 
-                                FontSize="16" />
-                            <Entry Text="{Binding Quantidade}" 
+                                FontSize="16"
+                                FontAttributes="Bold"   />
+                            <Label Text="{Binding preco}" 
+                                LineBreakMode="NoWrap" 
+                                Style="{DynamicResource ListItemDetailTextStyle}" 
+                                FontSize="13" />
+                            <Label Text="{Binding marcaProduto}" 
+                                LineBreakMode="NoWrap" 
+                                Style="{DynamicResource ListItemDetailTextStyle}" 
+                                FontSize="13" />
+                            <Label Text="{Binding nomeSupermercado}" 
+                                LineBreakMode="NoWrap" 
+                                Style="{DynamicResource ListItemDetailTextStyle}" 
+                                FontSize="13" />
+                            <Entry Text="{Binding QtdProduto}" 
                                 Style="{DynamicResource ListItemDetailTextStyle}"
+                                Keyboard="Numeric"
                                 FontSize="13" />
                           <Button Text="Remover" Clicked="Remove_Clicked" />
                         </StackLayout>

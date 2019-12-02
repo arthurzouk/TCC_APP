@@ -14,5 +14,9 @@ namespace TCC_APP.Models
         public string Nome { get; set; }
         [MaxLength(10)]
         public int Distancia { get; set; }
+        [MaxLength(50)]
+        public string Bairro { get; set; }
+        [MaxLength(50)]
+        public string Cidade { get; set; }
     }
 }

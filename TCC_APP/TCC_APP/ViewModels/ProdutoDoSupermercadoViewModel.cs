@@ -48,7 +48,7 @@ namespace TCC_APP.ViewModels
                 {
                     using (var dados = new AcessoDB())
                     {
-                        produto = dados.GetProduto(item.IdProduto);
+                        produto = dados.GetProduto(item.NomeProduto);
                     }
 
                     if (produto != null && (string.IsNullOrEmpty(palavraDebusca)

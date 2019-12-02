@@ -22,7 +22,7 @@ namespace TCC_APP
             conexaoSQLite.CreateTable<ProdutoDaLista>();
             conexaoSQLite.CreateTable<HistoricoDeCompra>();
             conexaoSQLite.CreateTable<Supermercado>();
-            conexaoSQLite.CreateTable<ProdutoDoSupermercado>();
+            //conexaoSQLite.CreateTable<ProdutoDoSupermercado>();
         }
 
         #region CRUD padrão usuário
@@ -59,10 +59,10 @@ namespace TCC_APP
         //{
         //    conexaoSQLite.Update(usuario);
         //}
-        //public void DeletarUsuario(Usuario usuario)
-        //{
-        //    conexaoSQLite.Delete(usuario);
-        //}
+        internal void DeletarProduto(string idProduto)
+        {
+            conexaoSQLite.Table<Produto>().Delete(x => x.Id == idProduto);
+        }
         #endregion
         #region Gets Produto
         public Produto GetProduto(string id)
@@ -95,9 +95,9 @@ namespace TCC_APP
         }
         #endregion
         #region Gets Supermercado
-        public Produto GetSupermercado(string id)
+        public Supermercado GetSupermercado(string id)
         {
-            return conexaoSQLite.Table<Produto>().FirstOrDefault(c => c.Id == id);
+            return conexaoSQLite.Table<Supermercado>().FirstOrDefault(c => c.Id == id);
         }
         internal List<Supermercado> BuscaSupermercado(string palavraDebusca)
         {
@@ -155,9 +155,10 @@ namespace TCC_APP
             //modificar criterio de busca
             return conexaoSQLite.Table<ProdutoDaLista>().FirstOrDefault(c => c.Id == id);
         }
-        public List<ProdutoDaLista> GetAllProdutoDaLista(string idLista)
+        public List<ProdutoDaLista> GetAllProdutoDaLista(string idLista = null)
         {
-            return conexaoSQLite.Table<ProdutoDaLista>().Where(c => c.IdListaDeCompra == idLista).ToList();
+            return idLista != null ? conexaoSQLite.Table<ProdutoDaLista>().Where(c => c.IdListaDeCompra == idLista).ToList() :
+                conexaoSQLite.Table<ProdutoDaLista>().OrderBy(c => c.Id).ToList();
         }
         #endregion
 
@@ -169,13 +170,15 @@ namespace TCC_APP
         }
         public void DeletarProdutoDoSupermercado(string idSupermercado, string idProduto)
         {
-            conexaoSQLite.Table<ProdutoDoSupermercado>().Delete(x => x.IdSupermercado == idSupermercado && x.IdProduto == idProduto);
+            return;
+            //conexaoSQLite.Table<ProdutoDoSupermercado>().Delete(x => x.IdSupermercado == idSupermercado && x.IdProduto == idProduto);
         }
         #endregion
         #region GET ProdutoDoSupermercado
         internal List<ProdutoDoSupermercado> GetAllProdutoDoSupermercado(string idSupermercado)
         {
-            return conexaoSQLite.Table<ProdutoDoSupermercado>().Where(c => c.IdSupermercado == idSupermercado).ToList();
+            return null;
+            //return conexaoSQLite.Table<ProdutoDoSupermercado>().Where(c => c.IdSupermercado == idSupermercado).ToList();
         }
         #endregion
 
