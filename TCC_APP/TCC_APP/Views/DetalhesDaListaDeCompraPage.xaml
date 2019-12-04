@@ -24,12 +24,6 @@
            FontSize="Medium"
            FontAttributes="Italic" 
            TextChanged="OnTextChanged"/>
-        <Label Text="Range" 
-                Grid.Column="1" />
-        <Entry x:Name="rangeEntry"
-                Placeholder="0"
-                Keyboard="Numeric"
-                Grid.Column="2" />
         <!--Lista de produtos da Lista de compras-->
         <ListView x:Name="ItemsListView"
                 ItemsSource="{Binding _produtoDaLista}"
@@ -40,7 +34,26 @@
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement"
                 ItemSelected="OnItemSelected">
-
+            <ListView.Header>
+                <StackLayout Padding="10,5,0,5" BackgroundColor="#3399FF">
+                    <Label Text="Range" 
+                        Grid.Column="1" />
+                    <Entry x:Name="rangeEntry"
+                        Placeholder="0"
+                        Keyboard="Numeric"
+                        Grid.Column="2" />
+                </StackLayout>
+            </ListView.Header>
+            <ListView.Footer>
+                <StackLayout Padding="10,5,0,5" >
+                    <Label x:Name="lblTotalLista" />
+                    <Label x:Name="lblTotalEntrega" />
+                    <Label x:Name="lblTotalCompra" />
+                    <Button Text="Comprar" 
+                            BackgroundColor="Red" 
+                            Clicked="btnComprarClicked" />
+                </StackLayout>
+            </ListView.Footer>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -65,7 +78,8 @@
                             <Entry Text="{Binding QtdProduto}" 
                                 Style="{DynamicResource ListItemDetailTextStyle}"
                                 Keyboard="Numeric"
-                                FontSize="13" />
+                                FontSize="13"
+                                TextChanged="OnQtdChanged"   />
                           <Button Text="Remover" Clicked="Remove_Clicked" />
                         </StackLayout>
                     </ViewCell>

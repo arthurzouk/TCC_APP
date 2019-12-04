@@ -5,20 +5,17 @@ using System.Text;
 
 namespace TCC_APP.Models
 {
-    [Table("HistoricoDeCompra")]
-    class HistoricoDeCompra
+    [Table("Compra")]
+    class Compra
     {
         [MaxLength(50)]
         public string Id { get; set; }
         [MaxLength(50)]
-        public string IdListaDeCompra { get; set; }
+        public string NomeListaDeCompra { get; set; }
         [MaxLength(50)]
-        public string IdProduto { get; set; }
+        public string ValorTotalProdutos { get; set; }
         [MaxLength(50)]
-        public string Preco { get; set; }
-        [MaxLength(50)]
-        public string IdSupermercado { get; set; }
-        [MaxLength(50)]
+        public string ValorTotalEntrega { get; set; }
         public DateTime Data { get; set; }
     }
 }

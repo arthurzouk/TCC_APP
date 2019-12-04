@@ -23,13 +23,23 @@
     <ContentPage.Content>
         <StackLayout Spacing="20" Padding="15">
             <Label Text="Nome" FontSize="Medium" />
-            <Entry Placeholder="{Binding Item.Nome}" FontSize="Small" />
+            <Entry x:Name="NomeEntry"
+                Placeholder="Novo Supermercado" 
+                FontSize="Small" />
             <Label Text="Bairro" FontSize="Medium" />
-            <Entry Placeholder="{Binding Item.Bairro}" FontSize="Small" />
+            <Entry x:Name="BairroEntry"
+                Placeholder="Bairro" 
+                   FontSize="Small" />
             <Label Text="Cidade" FontSize="Medium" />
-            <Entry Placeholder="{Binding Item.Cidade}" FontSize="Small" />
-            <Label Text="Distancia" FontSize="Medium" />
-            <Entry Placeholder="{Binding Item.Distancia}" FontSize="Small" Margin="0" />
+            <Entry x:Name="CidadeEntry"
+                   Placeholder="Cidade" 
+                   FontSize="Small" />
+            <Label Text="Distancia (KM)" FontSize="Medium" />
+            <Entry x:Name="DistanciaEntry"
+                   Placeholder="0" 
+                   FontSize="Small"
+                   Keyboard="Numeric"
+                   Margin="0" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

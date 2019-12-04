@@ -66,7 +66,7 @@ namespace TCC_APP.ViewModels
                             idProdutoDaLista = item.Id,
                             nomeProduto = produto.Nome,
                             marcaProduto = produto.Marca,
-                            QtdProduto = item.qtdProduto != null ? (item.qtdProduto) : "1",
+                            QtdProduto = item.qtdProduto != null && int.Parse(item.qtdProduto) != 0 ? item.qtdProduto : "1",
                             nomeSupermercado = supermercado.Nome,
                             preco = produto.Preco.ToString("C", CultureInfo.CurrentCulture)
                         };

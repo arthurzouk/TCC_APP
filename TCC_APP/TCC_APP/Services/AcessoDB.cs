@@ -18,11 +18,11 @@ namespace TCC_APP
             conexaoSQLite = new SQLiteConnection(Path.Combine(config.DiretorioSQLite, "TCC_APP.db3"));
             conexaoSQLite.CreateTable<Usuario>();
             conexaoSQLite.CreateTable<Produto>();
+            conexaoSQLite.CreateTable<Supermercado>();
             conexaoSQLite.CreateTable<ListaDeCompra>();
             conexaoSQLite.CreateTable<ProdutoDaLista>();
-            conexaoSQLite.CreateTable<HistoricoDeCompra>();
-            conexaoSQLite.CreateTable<Supermercado>();
-            //conexaoSQLite.CreateTable<ProdutoDoSupermercado>();
+            conexaoSQLite.CreateTable<Compra>();
+            conexaoSQLite.CreateTable<ProdutoDaCompra>();
         }
 
         #region CRUD padrão usuário
@@ -143,9 +143,9 @@ namespace TCC_APP
         {
             conexaoSQLite.Insert(novoProdutoDaLista);
         }
-        public void DeletarProdutoDaLista(string idLista, string idProduto)
+        public void DeletarProdutoDaLista(string idProdutoDaLista)
         {
-            conexaoSQLite.Table<ProdutoDaLista>().Delete(x => x.IdListaDeCompra == idLista && x.IdProduto == idProduto);
+            conexaoSQLite.Table<ProdutoDaLista>().Delete(x => x.Id == idProdutoDaLista);
         }
 
         #endregion
@@ -182,6 +182,32 @@ namespace TCC_APP
         }
         #endregion
 
+        #region CRUD Compra
+        internal void InserirCompra(Compra novaCompra)
+        {
+            conexaoSQLite.Insert(novaCompra);
+        }
+        #endregion
+        #region GET Compra
+        internal List<Compra> GetAllCompra()
+        {
+            return conexaoSQLite.Table<Compra>().OrderBy(c => c.Id).ToList();
+        }
+        #endregion
+
+        #region CRUD ProdutoDaCompra
+        internal void InserirProdutoDaCompra(ProdutoDaCompra novoProdutoDaCompra)
+        {
+            conexaoSQLite.Insert(novoProdutoDaCompra);
+        }
+        #endregion
+        #region GET ProdutoDaCompra
+        internal List<ProdutoDaCompra> GetAllProdutoDaCompra(/*string idCompra*/)
+        {
+            return conexaoSQLite.Table<ProdutoDaCompra>().ToList();
+                //Where(c => c.IdCompra == idCompra).ToList();
+        }
+        #endregion
         public void Dispose()
         {
             conexaoSQLite.Dispose();
