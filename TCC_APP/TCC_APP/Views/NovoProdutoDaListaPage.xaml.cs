@@ -58,12 +58,12 @@ namespace TCC_APP.Views
                 Id = Guid.NewGuid().ToString(),
                 IdListaDeCompra = idLista,
                 IdProduto = item.idProduto,
-                qtdProduto = "0"
+                qtdProduto = "1"
             };
 
             using (var dados = new AcessoDB())
             {
-                dados.inserirProdutoDaLista(novoProdutoDaLista);
+                dados.InserirProdutoDaLista(novoProdutoDaLista);
             }
 
             //MessagingCenter.Send(this, "AddItem", novoProduto);

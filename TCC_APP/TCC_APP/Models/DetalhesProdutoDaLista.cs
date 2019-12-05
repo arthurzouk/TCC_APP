@@ -10,7 +10,7 @@ namespace TCC_APP.Models
         public string nomeProduto { get; set; }
         public string marcaProduto { get; set; }
         public string nomeSupermercado { get; set; }
-        public string preco { get; set; }
+        public string valorTotalProduto { get; set; }
         public string QtdProduto { get; set; }
     }
 }

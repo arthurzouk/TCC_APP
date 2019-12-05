@@ -6,7 +6,7 @@
              x:Name="BrowserDetalhesDaListaPage">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="+" Clicked="AddItem_Clicked">
+        <ToolbarItem Text="Add" Clicked="AddItem_Clicked">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP" Value="add.png"/>
@@ -35,56 +35,169 @@
                 CachingStrategy="RecycleElement"
                 ItemSelected="OnItemSelected">
             <ListView.Header>
-                <StackLayout Padding="10,5,0,5" BackgroundColor="#3399FF">
-                    <Label Text="Range" 
-                        Grid.Column="1" />
-                    <Entry x:Name="rangeEntry"
-                        Placeholder="0"
-                        Keyboard="Numeric"
-                        Grid.Column="2" />
+                <StackLayout Padding="10,5,0,5" BackgroundColor="#2196F3">
+                    <Grid>
+                        <Label Text="Distância (Km)" 
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            TextColor="White" />
+                        <Entry x:Name="rangeEntry"
+                            Placeholder="0"
+                            Keyboard="Numeric"
+                            Grid.Column="1" 
+                            TextColor="White" />
+                    </Grid>
                 </StackLayout>
             </ListView.Header>
-            <ListView.Footer>
-                <StackLayout Padding="10,5,0,5" >
-                    <Label x:Name="lblTotalLista" />
-                    <Label x:Name="lblTotalEntrega" />
-                    <Label x:Name="lblTotalCompra" />
+            <!--Transformar em botão de add novo produto-->
+            <!--<ListView.Footer>-->
+                <!--<StackLayout Padding="10,5,0,5" >
+                    <Grid>
+                        <Label x:Name="lblTotalLista" 
+                               Grid.Row="0"
+                               Grid.Column="0"   />
+                        <Label x:Name="lblTotalEntrega" 
+                               Grid.Row="1"
+                               Grid.Column="0" />
+                        <Label x:Name="lblTotalCompra" 
+                               Grid.Row="0"
+                               Grid.Column="1"/>
+                    </Grid>
                     <Button Text="Comprar" 
-                            BackgroundColor="Red" 
+                            BackgroundColor="Red"
+                            TextColor="White"
                             Clicked="btnComprarClicked" />
                 </StackLayout>
-            </ListView.Footer>
+            </ListView.Footer>-->
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Padding="10">
-                            <Label Text="{Binding nomeProduto}" 
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource ListItemTextStyle}" 
-                                FontSize="16"
-                                FontAttributes="Bold"   />
-                            <Label Text="{Binding preco}" 
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource ListItemDetailTextStyle}" 
-                                FontSize="13" />
-                            <Label Text="{Binding marcaProduto}" 
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource ListItemDetailTextStyle}" 
-                                FontSize="13" />
-                            <Label Text="{Binding nomeSupermercado}" 
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource ListItemDetailTextStyle}" 
-                                FontSize="13" />
-                            <Entry Text="{Binding QtdProduto}" 
-                                Style="{DynamicResource ListItemDetailTextStyle}"
-                                Keyboard="Numeric"
-                                FontSize="13"
-                                TextChanged="OnQtdChanged"   />
-                          <Button Text="Remover" Clicked="Remove_Clicked" />
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="60"></RowDefinition>
+                                    <RowDefinition Height="40"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition ></ColumnDefinition>
+                                    <ColumnDefinition ></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                
+                                <Label Text="{Binding nomeProduto}" 
+                                    LineBreakMode="NoWrap" 
+                                    Style="{DynamicResource ListItemTextStyle}" 
+                                    FontSize="16"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    FontAttributes="Bold"   />
+                                <Label Text="{Binding valorTotalProduto}"
+                                    LineBreakMode="NoWrap"                                          
+                                    Style="{DynamicResource ListItemDetailTextStyle}"
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    FontSize="13" />
+                                <!--<Label Text="{Binding marcaProduto}" 
+                                    LineBreakMode="NoWrap" 
+                                    Style="{DynamicResource ListItemDetailTextStyle}" 
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    FontSize="13" />-->
+                                <!--<Label Text="{Binding nomeSupermercado}" 
+                                    LineBreakMode="NoWrap" 
+                                    Style="{DynamicResource ListItemDetailTextStyle}" 
+                                    Grid.Row="2"
+                                    FontSize="13" />-->
+
+                                <Grid x:Name="Item"
+                                    Grid.Row="0"
+                                        Grid.Column="1" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+
+
+                                    <Button Text="-" 
+                                            CommandParameter="{Binding Source={x:Reference Item}, Path=BindingContext}" 
+                                            BindingContext="{Binding Source={x:Reference ItemsListView}, Path=BindingContext}"                                             
+                                            FontSize="Small" 
+                                            Grid.RowSpan="2" 
+                                            Grid.Column="0"
+                                            Command="{Binding DecrementCounterCommand}">
+
+                                    </Button>
+                                    <Label Text="{Binding QtdProduto}" 
+                                           LineBreakMode="NoWrap" 
+                                           Style="{DynamicResource ListItemDetailTextStyle}" 
+                                           FontSize="Small" 
+                                           Grid.Row="0" 
+                                           Grid.Column="1" 
+                                           HorizontalTextAlignment="Center" 
+                                           VerticalTextAlignment="Center"
+                                           BindingContextChanged="OnQtdChanged" />
+                                    <Button Text="+"
+                                            CommandParameter="{Binding Source={x:Reference Item}, Path=BindingContext}" 
+                                            BindingContext="{Binding Source={x:Reference ItemsListView}, Path=BindingContext}"                                             
+                                            FontSize="Small" 
+                                            Grid.RowSpan="2" 
+                                            Grid.Column="2" 
+                                            Grid.Row="0" 
+                                            Command="{Binding IncrementCounterCommand}">
+
+                                    </Button>
+
+                                </Grid>
+                                
+                                <Button Text="Remover" 
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Clicked="Remove_Clicked" />
+                            </Grid>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        
+        <Grid >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="40" />
+            </Grid.RowDefinitions>
+            
+            <Label x:Name="lblTotalLista" 
+                   Grid.Row="0"
+                   Grid.Column="0"   />
+            <Label x:Name="lblTotalEntrega" 
+                   Grid.Row="1"
+                   Grid.Column="0" />
+            <Label x:Name="lblTotalCompra" 
+                   Grid.Row="0"
+                   Grid.Column="1"/>
+            <Button Text="Comprar" 
+                    BackgroundColor="Red"
+                    TextColor="White"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    
+                    Clicked="btnComprarClicked" />
+        </Grid>
+
+        <Grid>
+            <StackLayout x:Name="pickerProduto">
+
+            </StackLayout>
+        </Grid>
     </StackLayout>
 </ContentPage>

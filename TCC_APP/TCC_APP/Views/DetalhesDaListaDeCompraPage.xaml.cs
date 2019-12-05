@@ -44,14 +44,23 @@ namespace TCC_APP.Views
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            //var item = args.SelectedItem as ListaDeCompra;
-            //if (item == null)
-            //    return;
+            var item = args.SelectedItem as DetalhesProdutoDaLista;
+            if (item == null)
+                return;
 
-            //await Navigation.PushAsync(new DetalhesDaListaDeCompraPage(new ItemDetailViewModel(item)));
+            List<Produto> produtos = new List<Produto>();
 
-            //// Manually deselect item.
-            //ItemsListView.SelectedItem = null;
+            using (var dados = new AcessoDB())
+            {
+                var auxProdutos = dados.GetAllEqualProduto(item.nomeProduto);
+
+                foreach (var prod in auxProdutos)
+                {
+                    produtos.Add(prod);
+                }
+            }
+
+
         }
 
         void OnQtdChanged(object sender, EventArgs args)
@@ -64,6 +73,7 @@ namespace TCC_APP.Views
             Produto prod = null;
             Supermercado super = null;
 
+            //Muda os valores totais da lista
             foreach (var item in produtos)
             {
                 var produto = item as DetalhesProdutoDaLista;
@@ -72,14 +82,30 @@ namespace TCC_APP.Views
                     && !string.IsNullOrWhiteSpace(produto.QtdProduto)
                     && int.Parse(produto.QtdProduto) != 0)
                 {
-                    valorTotalProdutos += double.Parse(produto.QtdProduto) * double.Parse(produto.preco.Replace("R$", "").Trim());
-
                     using (var dados = new AcessoDB())
                     {
                         prodLista = dados.GetProdutoDaLista(produto.idProdutoDaLista);
                         prod = dados.GetProduto(prodLista.IdProduto);
                         super = dados.GetSupermercado(prod.IdSupermercado);
                     }
+
+                    ProdutoDaLista atualizarProdutoDaLista = new ProdutoDaLista
+                    {
+                        Id = prodLista.Id,
+                        IdListaDeCompra = prodLista.IdListaDeCompra,
+                        IdProduto = prodLista.IdProduto,
+                        qtdProduto = string.IsNullOrEmpty(produto.QtdProduto) ? "0" : produto.QtdProduto
+                    };
+
+                    if (prodLista.qtdProduto != produto.QtdProduto)
+                    {
+                        using (var dados = new AcessoDB())
+                        {
+                            dados.AtualizarProdutoDaLista(atualizarProdutoDaLista);
+                        }
+                    }
+
+                    valorTotalProdutos += double.Parse(produto.QtdProduto) * prod.Preco;
 
                     if (!idSupermercados.Contains(prod.IdSupermercado))
                     {
@@ -94,6 +120,8 @@ namespace TCC_APP.Views
             lblTotalEntrega.Text = "Total entrega: " + valorTotalEntrega.ToString("C", CultureInfo.CurrentCulture);
 
             lblTotalCompra.Text = "Total: " + (valorTotalProdutos + valorTotalEntrega).ToString("C", CultureInfo.CurrentCulture);
+
+            //RefreshlistView
         }
 
         async void Remove_Clicked(object sender, EventArgs args)
@@ -143,12 +171,21 @@ namespace TCC_APP.Views
             {
                 try
                 {
+                    var produto1 = viewModel._produtoDaLista[0];
+                    ListaDeCompra lista = null;
+
+                    using (var dados = new AcessoDB())
+                    {
+                        prodLista = dados.GetProdutoDaLista(produto1.idProdutoDaLista);
+                        lista = dados.GetListaDeCompra(prodLista.IdListaDeCompra);
+                    }
+
                     string novoID = Guid.NewGuid().ToString();
 
                     Compra novaCompra = new Compra
                     {
                         Id = novoID,
-                        NomeListaDeCompra = Title,
+                        NomeListaDeCompra = lista.Nome,
                         ValorTotalProdutos = lblTotalLista.Text,
                         ValorTotalEntrega = lblTotalEntrega.Text,
                         Data = DateTime.Now
@@ -172,7 +209,7 @@ namespace TCC_APP.Views
                         {
                             Id = Guid.NewGuid().ToString(),
                             IdProduto = prodLista.IdProduto,
-                            PrecoProduto = produto.preco,
+                            PrecoProduto = produto.valorTotalProduto,
                             qtdProduto = int.Parse(produto.QtdProduto)
                         };
 
@@ -184,7 +221,7 @@ namespace TCC_APP.Views
 
                     await DisplayAlert("Compra realizada", "Você realizou uma compra no valor de " + lblTotalLista.Text + "\r\n A entrega ficou no valor de " + lblTotalEntrega.Text, "OK");
 
-                    await Navigation.PopModalAsync();
+                    //Encaminhar usuário para tela de acompanhamento do pedido
                 }
                 catch (Exception ex)
                 {

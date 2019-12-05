@@ -73,6 +73,10 @@ namespace TCC_APP
         {
             return conexaoSQLite.Table<Produto>().Where(c => c.Nome.ToUpper().Contains(palavraDebusca.ToUpper())).ToList();
         }
+        internal List<Produto> GetAllEqualProduto(string nomeProduto)
+        {
+            return conexaoSQLite.Table<Produto>().Where(c => c.Nome.ToUpper() == nomeProduto.ToUpper()).ToList();
+        }
         public List<Produto> GetAllProduto()
         {
             return conexaoSQLite.Table<Produto>().OrderBy(c => c.Id).ToList();
@@ -139,9 +143,13 @@ namespace TCC_APP
 
         #region CRUD ProdutoDaLista
 
-        internal void inserirProdutoDaLista(ProdutoDaLista novoProdutoDaLista)
+        internal void InserirProdutoDaLista(ProdutoDaLista novoProdutoDaLista)
         {
             conexaoSQLite.Insert(novoProdutoDaLista);
+        }
+        public void AtualizarProdutoDaLista(ProdutoDaLista produtoDaLista)
+        {
+            conexaoSQLite.Update(produtoDaLista);
         }
         public void DeletarProdutoDaLista(string idProdutoDaLista)
         {

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SkiaSharp;
+using TCC_APP.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -9,11 +11,13 @@ namespace TCC_APP.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RelatorioLista : ContentPage
     {
+        HistoricoDeComprasViewModel viewModel;
+
         public RelatorioLista()
         {
             InitializeComponent();
 
-            Grafico.Chart = new Microcharts.LineChart() { Entries = entries };
+            //Grafico.Chart = new Microcharts.LineChart() { Entries = entries };
         }
 
         List<Microcharts.Entry> entries = new List<Microcharts.Entry>
@@ -44,6 +48,50 @@ namespace TCC_APP.Views
             }
         };
 
+        //void OnViewCellTapped(object sender, EventArgs e)
+        //{
+        //    _target.IsVisible = !_target.IsVisible;
+        //    _viewCell.ForceUpdateSize();
+        //}
 
+        private void PckTipoRelatorio_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var picker = pckTipoRelatorio.SelectedItem;
+
+            if (picker.ToString() == "Histórico de compras")
+            {
+                tblHistoricoCompras.IsVisible = true;
+
+                BindingContext = viewModel = new HistoricoDeComprasViewModel();
+
+                viewModel.LoadItemsCommand.Execute(null);
+            }
+            else if (picker.ToString() == "Variação de preço de produto")
+            {
+                tblHistoricoCompras.IsVisible = false;
+            }
+        }
+
+        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+        {
+            //var item = args.SelectedItem as ListaDeCompra;
+            //if (item == null)
+            //    return;
+
+            //await Navigation.PushAsync(new DetalhesDaListaDeCompraPage(new ItemDetailViewModel(item), item.Id));
+
+            //// Manually deselect item.
+            //ItemsListView.SelectedItem = null;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            if (viewModel != null)
+            {
+                viewModel.LoadItemsCommand.Execute(null);
+            }
+        }
     }
 }

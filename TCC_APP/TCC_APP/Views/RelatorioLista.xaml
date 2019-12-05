@@ -4,5 +4,83 @@
              xmlns:forms="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
              x:Class="TCC_APP.Views.RelatorioLista">
 
-        <forms:ChartView x:Name="Grafico" HeightRequest="150" />
+    <StackLayout>
+        <Picker x:Name="pckTipoRelatorio"
+                HorizontalOptions="FillAndExpand"
+                Title="Selecione o supermercado"
+                SelectedIndexChanged="PckTipoRelatorio_SelectedIndexChanged" >
+            <Picker.Items>
+                <x:String>Histórico de compras</x:String>
+                <x:String>Variação de preço de produto</x:String>
+            </Picker.Items>
+        </Picker>
+        <ListView x:Name="tblHistoricoCompras"
+                ItemsSource="{Binding _compras}"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                IsVisible="False"
+                RefreshCommand="{Binding LoadItemsCommand}"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                CachingStrategy="RecycleElement"
+                ItemSelected="OnItemSelected">
+            <!--<ListView.Header>
+                <StackLayout Padding="10,5,0,5" BackgroundColor="#3399FF">
+                    <Grid ColumnSpacing="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <Label Text="Lista" Grid.Row="0" Grid.Column="0" FontAttributes="Bold"/>
+                        <Label Text="Valor Produtos" Grid.Row="0" Grid.Column="1" FontAttributes="Bold" />
+                        <Label Text="Valor Entrega" Grid.Row="0" Grid.Column="2" FontAttributes="Bold" />
+                        <Label Text="Data" Grid.Row="0" Grid.Column="3" FontAttributes="Bold"/>
+                    </Grid>
+                </StackLayout>
+            </ListView.Header>-->
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout HeightRequest="50" Padding="10">
+                            <Grid>
+                                <Label Text="{Binding NomeListaDeCompra}" 
+                                    LineBreakMode="NoWrap" 
+                                    Style="{DynamicResource ListItemTextStyle}" 
+                                    FontSize="16"
+                                    Grid.Column="0"
+                                    FontAttributes="Bold"   />
+
+                                <Label Text="{Binding Data}" 
+                                    LineBreakMode="NoWrap" 
+                                    Style="{DynamicResource ListItemDetailTextStyle}" 
+                                    Grid.Column="1"
+                                    FontSize="13" />
+                            </Grid>
+                            <Grid>
+                                <Label Text="{Binding ValorTotalProdutos}" 
+                                    LineBreakMode="NoWrap" 
+                                    Style="{DynamicResource ListItemDetailTextStyle}" 
+                                    Grid.Column="0"
+                                    FontSize="13" />
+                                <Label Text="{Binding ValorTotalEntrega}" 
+                                    LineBreakMode="NoWrap" 
+                                    Style="{DynamicResource ListItemDetailTextStyle}" 
+                                    Grid.Column="1"
+                                    FontSize="13" />
+                            </Grid>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+    <!--<forms:ChartView x:Name="Grafico" HeightRequest="150" />-->
 </ContentPage>

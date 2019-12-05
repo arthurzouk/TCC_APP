@@ -8,6 +8,7 @@ namespace TCC_APP.Models
     [Table("ProdutoDaLista")]
     public class ProdutoDaLista
     {
+        [SQLite.PrimaryKey]
         [MaxLength(50)]
         public string Id { get; set; }
         [MaxLength(50)]

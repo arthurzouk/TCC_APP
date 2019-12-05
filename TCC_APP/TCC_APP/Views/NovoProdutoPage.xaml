@@ -39,8 +39,7 @@
             <Label Text="Supermercado" FontSize="Medium" />
             <Picker x:Name="supPicker"
                 Title="Selecione o supermercado"
-                ItemDisplayBinding="{Binding Nome}"
-                TitleColor="Red" >
+                ItemDisplayBinding="{Binding Nome}" >
 
             </Picker>
         </StackLayout>

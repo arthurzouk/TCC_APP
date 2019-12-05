@@ -34,7 +34,7 @@
             <Entry x:Name="CidadeEntry"
                    Placeholder="Cidade" 
                    FontSize="Small" />
-            <Label Text="Distancia (KM)" FontSize="Medium" />
+            <Label Text="Distancia (Km)" FontSize="Medium" />
             <Entry x:Name="DistanciaEntry"
                    Placeholder="0" 
                    FontSize="Small"
