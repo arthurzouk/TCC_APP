@@ -5,7 +5,7 @@
              Title="{Binding Title}"
              x:Name="ListaDeCompraPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="+" Clicked="AddItem_Clicked">
+        <ToolbarItem Text="Add" Clicked="AddItem_Clicked">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP" Value="add.png"/>

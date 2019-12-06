@@ -26,18 +26,57 @@ namespace TCC_APP
         }
 
         #region CRUD padrão usuário
-        public void InserirUsuario(Usuario usuario)
+        public string InserirUsuario(Usuario usuario)
         {
-            conexaoSQLite.Insert(usuario);
+            var data = conexaoSQLite.Table<Usuario>();
+            var d1 = data.Where(x => x.Email == usuario.Email && x.LoginUsuario == usuario.LoginUsuario).FirstOrDefault();
+            if (d1 == null)
+            {
+                conexaoSQLite.Insert(usuario);
+                return "Adicionado com sucesso";
+            }
+            else
+                return "E-mail já cadastrado";
         }
-        //public void AtualizarUsuario(Usuario usuario)
-        //{
-        //    conexaoSQLite.Update(usuario);
-        //}
-        //public void DeletarUsuario(Usuario usuario)
-        //{
-        //    conexaoSQLite.Delete(usuario);
-        //}
+        public bool ValidarSeUsuarioCadastrado(string email)
+        {
+            var data = conexaoSQLite.Table<Usuario>();
+            var d1 = (from values in data
+                      where values.Email == email
+                      select values).Single();
+            if (d1 != null)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+        public bool AtualizarLoginSenha(string usuario, string senha)
+        {
+            var data = conexaoSQLite.Table<Usuario>();
+            var d1 = (from values in data
+                      where values.LoginUsuario == usuario
+                      select values).Single();
+            if (d1 != null)
+            {
+                d1.Senha = senha;
+                conexaoSQLite.Update(d1);
+                return true;
+            }
+            else
+                return false;
+        }
+        public bool ValidarLogin(string usuario, string senha)
+        {
+            var data = conexaoSQLite.Table<Usuario>();
+            var d1 = data.Where(x => x.LoginUsuario == usuario && x.Senha == senha).FirstOrDefault();
+            if (d1 != null)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
         public Usuario GetUsuario(string loginUsuario)
         {
             return conexaoSQLite.Table<Usuario>().FirstOrDefault(c => c.LoginUsuario == loginUsuario);
@@ -76,6 +115,10 @@ namespace TCC_APP
         internal List<Produto> GetAllEqualProduto(string nomeProduto)
         {
             return conexaoSQLite.Table<Produto>().Where(c => c.Nome.ToUpper() == nomeProduto.ToUpper()).ToList();
+        }
+        internal List<Produto> GetALLMesmaMarcaProduto(string marcaProduto)
+        {
+            return conexaoSQLite.Table<Produto>().Where(c => c.Marca.ToUpper() == marcaProduto.ToUpper()).ToList();
         }
         public List<Produto> GetAllProduto()
         {
@@ -150,6 +193,10 @@ namespace TCC_APP
         public void AtualizarProdutoDaLista(ProdutoDaLista produtoDaLista)
         {
             conexaoSQLite.Update(produtoDaLista);
+        }
+        public void DeletarProdutosDaLista(string idLista)
+        {
+            conexaoSQLite.Table<ProdutoDaLista>().Delete(x => x.IdListaDeCompra == idLista);
         }
         public void DeletarProdutoDaLista(string idProdutoDaLista)
         {

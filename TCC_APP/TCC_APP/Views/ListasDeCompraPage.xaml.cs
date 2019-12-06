@@ -63,6 +63,7 @@ namespace TCC_APP.Views
 
                 using (var dados = new AcessoDB())
                 {
+                    dados.DeletarProdutosDaLista(listaDeCompra.Id);
                     dados.DeletarListaDeCompra(listaDeCompra.Id);
                 }
 

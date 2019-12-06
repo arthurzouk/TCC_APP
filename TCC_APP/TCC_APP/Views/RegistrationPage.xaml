@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TCC_APP.Views.RegistrationPage"
+             xmlns:local="clr-namespace:TCC_APP"
+             Title="CadastroPage">
+    <ContentPage.Content>
+        <AbsoluteLayout Margin="5,0,5,5">
+            <FlexLayout IsVisible="True" JustifyContent="SpaceEvenly" Direction="Column" AlignItems="Center" Margin="30,0,30,0" >
+                <Image Source="logo.png" HeightRequest="60" WidthRequest="60" FlexLayout.AlignSelf="Center" BackgroundColor="Transparent" />
+                <Entry x:Name="emailEntry" Placeholder="E-mail" ReturnType="Next" Keyboard="Email" FontSize="Medium" FlexLayout.AlignSelf="Stretch"  HorizontalOptions="CenterAndExpand"  TextColor="Black" >
+                    <Entry.Behaviors>
+                        <local:EmailValidationBehavior></local:EmailValidationBehavior>
+                    </Entry.Behaviors>
+                </Entry>
+                <Entry x:Name="NameEntry" ReturnType="Next" MaxLength="10" Placeholder="Como quer ser chamado" FontSize="Medium" FlexLayout.AlignSelf="Stretch"  HorizontalOptions="CenterAndExpand"  TextColor="Black" Keyboard="Text" />
+                <Entry x:Name="userNameEntry" ReturnType="Next" MaxLength="10" Placeholder="Login" FontSize="Medium" FlexLayout.AlignSelf="Stretch"  HorizontalOptions="CenterAndExpand"  TextColor="Black" Keyboard="Text" />
+                <Entry x:Name="passwordEntry" ReturnType="Next" MaxLength="12" IsPassword="True" Placeholder="senha" FontSize="Medium" FlexLayout.AlignSelf="Stretch"  HorizontalOptions="CenterAndExpand"  TextColor="Black" />
+                <Entry x:Name="confirmpasswordEntry" ReturnType="Next" MaxLength="12" IsPassword="True" Placeholder="confirme a senha" FontSize="Medium" FlexLayout.AlignSelf="Stretch"  HorizontalOptions="CenterAndExpand"  TextColor="Black" />
+                <Label x:Name="warningLabel" Text="" IsVisible="False" TextColor="Blue" FontSize="15" BackgroundColor="Transparent" FlexLayout.AlignSelf="End"/>
+                <Button x:Name="signUp" Clicked="SignupValidation_ButtonClicked" FontSize="Medium" TextColor="White" BorderColor="Black" BackgroundColor="#00b33c"  CornerRadius="5" FlexLayout.AlignSelf="Stretch"  HorizontalOptions="CenterAndExpand" Text="Cadastrar"/>
+                <Button TextColor="Black" BackgroundColor="Transparent" Clicked="login_ClickedEvent" Text="Acessar" FontSize="13" FlexLayout.AlignSelf="Start" />
+            </FlexLayout>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

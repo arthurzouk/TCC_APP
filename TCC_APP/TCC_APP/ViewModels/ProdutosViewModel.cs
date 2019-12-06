@@ -16,14 +16,14 @@ namespace TCC_APP.ViewModels
         public ObservableCollection<ProdutoDoSupermercado> _produtos { get; set; }
         public Command LoadItemsCommand { get; set; }
 
-        public ProdutosViewModel(string palavraDebusca = null, string distancia = null, string idLista = null)
+        public ProdutosViewModel(string palavraDebusca = null, string distancia = null, string idLista = null, string nomeProduto = null, string marcaProduto = null, double precoUnidade = 0)
         {
             Title = "Produtos";
             _produtos = new ObservableCollection<ProdutoDoSupermercado>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand(palavraDebusca, distancia, idLista));
+            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand(palavraDebusca, distancia, idLista, nomeProduto, marcaProduto, precoUnidade));
         }
 
-        async Task ExecuteLoadItemsCommand(string palavraDebusca, string distancia, string idLista)
+        async Task ExecuteLoadItemsCommand(string palavraDebusca, string distancia, string idLista, string nomeProduto, string marcaProduto, double precoUnidade)
         {
             if (IsBusy)
                 return;
@@ -33,22 +33,55 @@ namespace TCC_APP.ViewModels
             try
             {
                 _produtos.Clear();
-                //var items = await ProdutoDataStore.GetItemsAsync("teste");
 
                 bool produtoDentroDoRange;
                 bool produtoPertenceALista;
                 List<Produto> produtos = null;
+                List<Produto> produtosMesmaMarca = null;
                 List<Supermercado> supermercados = null;
                 ProdutoDoSupermercado item = null;
                 List<ProdutoDaLista> produtosDeListas = null;
 
                 using (var dados = new AcessoDB())
                 {
-                    produtos = string.IsNullOrEmpty(palavraDebusca) ? dados.GetAllProduto() : dados.BuscaProduto(palavraDebusca);
+                    if (!string.IsNullOrEmpty(palavraDebusca))
+                    {
+                        produtos = dados.BuscaProduto(palavraDebusca);
+                    }
+                    else if (!string.IsNullOrEmpty(nomeProduto))
+                    {
+                        produtos = dados.GetAllEqualProduto(nomeProduto);
+                        produtosMesmaMarca = dados.GetALLMesmaMarcaProduto(marcaProduto);
+
+                        bool jaContido;
+
+                        foreach (var p in produtosMesmaMarca)
+                        {
+                            jaContido = false;
+
+                            foreach (var pr in produtos)
+                            {
+                                if (p.Id == pr.Id)
+                                {
+                                    jaContido = true;
+                                }    
+                            }
+
+                            if (!jaContido)
+                            {
+                                produtos.Add(p);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        produtos = dados.GetAllProduto();
+                    }
+                    //produtos = string.IsNullOrEmpty(palavraDebusca) ? dados.GetAllProduto() : dados.BuscaProduto(palavraDebusca);
                     supermercados = dados.GetAllSupermercado();
-                    produtosDeListas = dados.GetAllProdutoDaLista();
+                    produtosDeListas = dados.GetAllProdutoDaLista(idLista);
                 }
-                
+
                 foreach (var prod in produtos)
                 {
                     item = null;
@@ -69,16 +102,38 @@ namespace TCC_APP.ViewModels
                             {
                                 foreach (var prodLista in produtosDeListas)
                                 {
-                                    if (prodLista.IdListaDeCompra == idLista
-                                        && prodLista.IdProduto == prod.Id)
+                                    using (var dados = new AcessoDB())
                                     {
-                                        produtoPertenceALista = true;
+                                        var auxProduto = dados.GetProduto(prodLista.IdProduto);
+
+                                        if (
+                                            //Excluir da lista produto do mesmo ID ou produtos do mesmo nome se o nome produto for nulo
+                                            (prodLista.IdListaDeCompra == idLista
+                                        && prodLista.IdProduto == prod.Id)
+                                        || (prod.Nome.ToUpper() == auxProduto.Nome.ToUpper()
+                                        && nomeProduto == null)
+                                        )
+                                        {
+                                            produtoPertenceALista = true;
+                                        }
                                     }
                                 }
                             }
 
                             if (produtoDentroDoRange && !produtoPertenceALista)
                             {
+                                double diferenca = 0;
+                                string corDiferenca = string.Empty;
+
+                                if (distancia != null
+                                    && precoUnidade != 0)
+                                {
+                                    diferenca = precoUnidade - prod.Preco;
+
+                                    corDiferenca = diferenca == 0 ? "black" : diferenca > 0 ? "green" : "red";
+                                }
+
+
                                 item = new ProdutoDoSupermercado()
                                 {
                                     idProduto = prod.Id,
@@ -87,7 +142,9 @@ namespace TCC_APP.ViewModels
                                     MarcaProduto = prod.Marca,
                                     Preco = prod.Preco.ToString("C", CultureInfo.CurrentCulture),
                                     _imgProduto = prod._img != null ? prod._img : string.Empty,
-                                    distancia = sup.Distancia
+                                    distancia = sup.Distancia,
+                                    Diferenca = diferenca == 0 ? "Mesmo valor!" : diferenca > 0 ? "Economize: " + diferenca.ToString("C", CultureInfo.CurrentCulture) : "Prejuizo: " + diferenca.ToString("C", CultureInfo.CurrentCulture),
+                                    CorDiferenca = string.IsNullOrEmpty(corDiferenca) ? "black" : corDiferenca
                                 };
                             }
 
@@ -115,7 +172,8 @@ namespace TCC_APP.ViewModels
         {
             get
             {
-                return new Command<ProdutoDoSupermercado>((Product) => {
+                return new Command<ProdutoDoSupermercado>((Product) =>
+                {
                     _produtos.Remove(Product);
                 });
             }

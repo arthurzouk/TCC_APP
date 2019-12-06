@@ -5,14 +5,14 @@
              Title="Nova Lista">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Cancel" Clicked="Cancel_Clicked">
+        <ToolbarItem Text="Voltar" Clicked="Cancel_Clicked">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP" Value="cancel.png"/>
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-        <ToolbarItem Text="Save" Clicked="Save_Clicked">
+        <ToolbarItem Text="Salvar" Clicked="Save_Clicked">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP" Value="save.png"/>
@@ -24,9 +24,9 @@
     <ContentPage.Content>
         <StackLayout Spacing="20" Padding="15">
             <Label Text="Nome" FontSize="Medium" />
-            <Entry Text="{Binding Item.Nome}" FontSize="Small" />
+            <Entry x:Name="NomeEntry" Placeholder="Informe o nome da Lista" FontSize="Small" />
             <Label Text="Descrição" FontSize="Medium" />
-            <Editor Text="{Binding Item.Descricao}" FontSize="Small" Margin="0" />
+            <Editor x:Name="descricaoEntry" Placeholder="Opcional" FontSize="Small" Margin="0" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

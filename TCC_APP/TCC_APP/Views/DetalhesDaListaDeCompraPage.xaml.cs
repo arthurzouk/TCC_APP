@@ -48,19 +48,21 @@ namespace TCC_APP.Views
             if (item == null)
                 return;
 
-            List<Produto> produtos = new List<Produto>();
-
-            using (var dados = new AcessoDB())
+            if (rangeEntry.Text == null)
             {
-                var auxProdutos = dados.GetAllEqualProduto(item.nomeProduto);
+                await DisplayAlert("Erro.", "Por favor informe a DISTANCIA desejada", "OK");
 
-                foreach (var prod in auxProdutos)
-                {
-                    produtos.Add(prod);
-                }
+                rangeEntry.Focus();
+            }
+            else
+            {
+                double precoUnidade = double.Parse(item.valorTotalProduto.Replace("R$", "")) / int.Parse(item.QtdProduto);
+
+                await Navigation.PushModalAsync(new NavigationPage(new OpcoesProdutoPage(idLista, item.idProdutoDaLista, item.nomeProduto, item.marcaProduto, precoUnidade, rangeEntry.Text)));
             }
 
-
+            // Manually deselect item.
+            ItemsListView.SelectedItem = null;
         }
 
         void OnQtdChanged(object sender, EventArgs args)
@@ -73,55 +75,61 @@ namespace TCC_APP.Views
             Produto prod = null;
             Supermercado super = null;
 
-            //Muda os valores totais da lista
-            foreach (var item in produtos)
+            try
             {
-                var produto = item as DetalhesProdutoDaLista;
-
-                if (!string.IsNullOrEmpty(produto.QtdProduto)
-                    && !string.IsNullOrWhiteSpace(produto.QtdProduto)
-                    && int.Parse(produto.QtdProduto) != 0)
+                //Muda os valores totais da lista
+                foreach (var item in produtos)
                 {
-                    using (var dados = new AcessoDB())
-                    {
-                        prodLista = dados.GetProdutoDaLista(produto.idProdutoDaLista);
-                        prod = dados.GetProduto(prodLista.IdProduto);
-                        super = dados.GetSupermercado(prod.IdSupermercado);
-                    }
+                    var produto = item as DetalhesProdutoDaLista;
 
-                    ProdutoDaLista atualizarProdutoDaLista = new ProdutoDaLista
-                    {
-                        Id = prodLista.Id,
-                        IdListaDeCompra = prodLista.IdListaDeCompra,
-                        IdProduto = prodLista.IdProduto,
-                        qtdProduto = string.IsNullOrEmpty(produto.QtdProduto) ? "0" : produto.QtdProduto
-                    };
-
-                    if (prodLista.qtdProduto != produto.QtdProduto)
+                    if (!string.IsNullOrEmpty(produto.QtdProduto)
+                        && !string.IsNullOrWhiteSpace(produto.QtdProduto)
+                        && int.Parse(produto.QtdProduto) != 0)
                     {
                         using (var dados = new AcessoDB())
                         {
-                            dados.AtualizarProdutoDaLista(atualizarProdutoDaLista);
+                            prodLista = dados.GetProdutoDaLista(produto.idProdutoDaLista);
+                            prod = dados.GetProduto(prodLista.IdProduto);
+                            super = dados.GetSupermercado(prod.IdSupermercado);
+                        }
+
+                        ProdutoDaLista atualizarProdutoDaLista = new ProdutoDaLista
+                        {
+                            Id = prodLista.Id,
+                            IdListaDeCompra = prodLista.IdListaDeCompra,
+                            IdProduto = prodLista.IdProduto,
+                            qtdProduto = string.IsNullOrEmpty(produto.QtdProduto) ? "0" : produto.QtdProduto
+                        };
+
+                        if (prodLista.qtdProduto != produto.QtdProduto)
+                        {
+                            using (var dados = new AcessoDB())
+                            {
+                                dados.AtualizarProdutoDaLista(atualizarProdutoDaLista);
+                            }
+                        }
+
+                        valorTotalProdutos += double.Parse(produto.QtdProduto) * prod.Preco;
+
+                        if (!idSupermercados.Contains(prod.IdSupermercado))
+                        {
+                            valorTotalEntrega += super.Distancia;
+                            idSupermercados += prod.IdSupermercado + " | ";
                         }
                     }
-
-                    valorTotalProdutos += double.Parse(produto.QtdProduto) * prod.Preco;
-
-                    if (!idSupermercados.Contains(prod.IdSupermercado))
-                    {
-                        valorTotalEntrega += super.Distancia;
-                        idSupermercados += prod.IdSupermercado + " | ";
-                    }
                 }
+
+                lblTotalLista.Text = "Total produtos: " + valorTotalProdutos.ToString("C", CultureInfo.CurrentCulture);
+
+                lblTotalEntrega.Text = "Total entrega: " + valorTotalEntrega.ToString("C", CultureInfo.CurrentCulture);
+
+                lblTotalCompra.Text = "Total: " + (valorTotalProdutos + valorTotalEntrega).ToString("C", CultureInfo.CurrentCulture);
             }
-
-            lblTotalLista.Text = "Total produtos: " + valorTotalProdutos.ToString("C", CultureInfo.CurrentCulture);
-
-            lblTotalEntrega.Text = "Total entrega: " + valorTotalEntrega.ToString("C", CultureInfo.CurrentCulture);
-
-            lblTotalCompra.Text = "Total: " + (valorTotalProdutos + valorTotalEntrega).ToString("C", CultureInfo.CurrentCulture);
-
-            //RefreshlistView
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            
         }
 
         async void Remove_Clicked(object sender, EventArgs args)
@@ -140,7 +148,8 @@ namespace TCC_APP.Views
                 vm.RemoveCommand.Execute(produto);
 
                 await DisplayAlert("Produto removido", "O produto " + produto.nomeProduto + " foi removido da lista.", "OK");
-
+                
+                viewModel.LoadItemsCommand.Execute(null);
             }
             catch (Exception ex)
             {
@@ -152,7 +161,9 @@ namespace TCC_APP.Views
         {
             if (rangeEntry.Text == null)
             {
-                await DisplayAlert("Erro ao tentar adicionar produto.", "Por favor informe o RANGE desejado", "OK");
+                await DisplayAlert("Erro ao tentar adicionar produto.", "Por favor informe a DISTANCIA desejada", "OK");
+
+                rangeEntry.Focus();
                 return;
             }
 
@@ -163,7 +174,7 @@ namespace TCC_APP.Views
         {
             ProdutoDaLista prodLista = null;
 
-            if (lblTotalCompra.Text.Contains("R$ 0,00"))
+            if (lblTotalCompra.Text == null || lblTotalCompra.Text.Contains("R$ 0,00"))
             {
                 await DisplayAlert("Erro ao efetuar compra", "Não é possível comprar uma lista vazia.", "OK");
             }

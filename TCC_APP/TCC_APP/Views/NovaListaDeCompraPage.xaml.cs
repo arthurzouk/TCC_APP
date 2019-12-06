@@ -11,28 +11,29 @@ namespace TCC_APP.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NovaListaDeCompraPage : ContentPage
     {
-        public ListaDeCompra Item { get; set; }
-
         public NovaListaDeCompraPage()
         {
             InitializeComponent();
-
-            Item = new ListaDeCompra
-            {
-                Nome = "Nova Lista",
-                Descricao = "Descrição"
-            };
 
             BindingContext = this;
         }
 
         async void Save_Clicked(object sender, EventArgs e)
         {
+
+            if (NomeEntry.Text == "Informe o nome da lista"
+                || string.IsNullOrEmpty(NomeEntry.Text)
+                || string.IsNullOrWhiteSpace(NomeEntry.Text))
+            {
+                await DisplayAlert("Erro ao salvar nova lista.", "Por favor informe um nome para a lista", "OK");
+                return;
+            }
+
             ListaDeCompra novaLista = new ListaDeCompra
             {
                 Id = Guid.NewGuid().ToString(),
-                Nome = Item.Nome,
-                Descricao = Item.Descricao
+                Nome = NomeEntry.Text,
+                Descricao = descricaoEntry.Text
             };
 
             using (var dados = new AcessoDB())

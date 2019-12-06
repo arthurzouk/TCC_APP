@@ -22,5 +22,7 @@ namespace TCC_APP.Models
         public string _imgProduto { get; set; }
         [MaxLength(10)]
         public int distancia { get; set; }
+        public string Diferenca { get; set; }
+        public string CorDiferenca { get; set; }
     }
 }

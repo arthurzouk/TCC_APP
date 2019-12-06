@@ -35,22 +35,36 @@
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Padding="10">
-                            <Label Text="{Binding NomeProduto}" 
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource ListItemTextStyle}" 
-                                FontSize="16" />
-                            <Label Text="{Binding MarcaProduto}" 
-                                LineBreakMode="NoWrap"
-                                Style="{DynamicResource ListItemDetailTextStyle}"
-                                FontSize="13" />
-                            <Label Text="{Binding NomeSupermercado}" 
-                                LineBreakMode="NoWrap"
-                                Style="{DynamicResource ListItemDetailTextStyle}"
-                                FontSize="13" />
-                            <Label Text="{Binding Preco}" 
-                                LineBreakMode="NoWrap"
-                                Style="{DynamicResource ListItemDetailTextStyle}"
-                                FontSize="13" />
+                            <Grid>
+                                <Label Text="{Binding NomeProduto}" 
+                                    LineBreakMode="NoWrap" 
+                                    Style="{DynamicResource ListItemTextStyle}" 
+                                    FontSize="16"
+                                    Grid.Column="0"
+                                    Grid.Row="0"   />
+                                <Label Text="{Binding MarcaProduto}" 
+                                    LineBreakMode="NoWrap"
+                                    Style="{DynamicResource ListItemDetailTextStyle}"
+                                    FontSize="13"
+                                    Grid.Column="0"
+                                    Grid.Row="1" />
+                                <Label Text="{Binding NomeSupermercado}" 
+                                    LineBreakMode="NoWrap"
+                                    Style="{DynamicResource ListItemDetailTextStyle}"
+                                    FontSize="13"
+                                    Grid.Column="1"
+                                    Grid.Row="0" />
+                                <Label Text="{Binding Preco}" 
+                                    LineBreakMode="NoWrap"
+                                    Style="{DynamicResource ListItemDetailTextStyle}"
+                                    FontSize="13"
+                                    Grid.Column="1"
+                                    Grid.Row="1" />
+                                <Label Text="{Binding Diferenca}"
+                                    TextColor="{Binding CorDiferenca}"
+                                    HorizontalTextAlignment="Center" 
+                                    Grid.Row="2"/>
+                            </Grid>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

@@ -1,54 +1,31 @@
-﻿using TCC_APP.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace TCC_APP.Views
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainPage : MasterDetailPage
-    {
-        Dictionary<int, NavigationPage> MenuPages = new Dictionary<int, NavigationPage>();
-        public MainPage()
-        {
-            InitializeComponent();
-
-            MasterBehavior = MasterBehavior.Popover;
-
-            MenuPages.Add((int)MenuItemType.Listas, (NavigationPage)Detail);
+	[XamlCompilation(XamlCompilationOptions.Compile)]
+	public partial class MainPage : ContentPage
+	{
+		public MainPage ()
+		{
+			InitializeComponent ();
+            NavigationPage.SetHasNavigationBar(this.musicPage, true);
         }
 
-        public async Task NavigateFromMenu(int id)
+        private async void LoginButton_Clicked(object sender, EventArgs e)
         {
-            if (!MenuPages.ContainsKey(id))
-            {
-                switch (id)
-                {
-                    case (int)MenuItemType.Listas:
-                        MenuPages.Add(id, new NavigationPage(new ListasDeCompraPage()));
-                        break;
-                    case (int)MenuItemType.Produtos:
-                        MenuPages.Add(id, new NavigationPage(new ProdutoPage()));
-                        break;
-                    case (int)MenuItemType.Relatorios:
-                        MenuPages.Add(id, new NavigationPage(new ProdutoPage()));
-                        break;
-                }
-            }
+            await Navigation.PushAsync(new LoginPage());
+        }
 
-            var newPage = MenuPages[id];
-
-            if (newPage != null && Detail != newPage)
-            {
-                Detail = newPage;
-
-                if (Device.RuntimePlatform == Device.Android)
-                    await Task.Delay(100);
-
-                IsPresented = false;
-            }
+        private async void SignUp_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new RegistrationPage());
         }
     }
 }
